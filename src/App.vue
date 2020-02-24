@@ -1,10 +1,6 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -13,8 +9,16 @@
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
+  margin: 0 auto;
+}
+
+@media (max-width: 980px) {
+  #app {
+    width: 100%;
+    margin: 0;
+  }
 }
 
 #nav {
@@ -30,3 +34,15 @@
   color: #42b983;
 }
 </style>
+
+<script>
+import Home from '@/views/Home.vue'
+import Navbar from '@/components/Navbar.vue'
+
+export default {
+  components: {
+    Home,
+    Navbar,
+  },
+}
+</script>

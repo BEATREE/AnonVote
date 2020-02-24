@@ -1,0 +1,14 @@
+/* params.stylus （参数配置）*/
+// 配置页头的相关参数
+$header-height = 60px
+$header-li-width = 70px
+// 导航栏菜单激活颜色
+$menu-active-color = $googleYellow
+$headerBg = #282C34
+$headerTextColor = #ffffff
+
+/* color.stylus （颜色配置） */
+$googleRed = #f4433c
+$googleBlue = #2d85f0
+$googleGreen = #0aa858
+$googleYellow = #ffbc32

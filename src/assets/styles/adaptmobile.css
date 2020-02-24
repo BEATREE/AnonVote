@@ -1,0 +1,28 @@
+/* 全局默认动画 */
+* {
+  transition: all ease 0.2s;
+}
+/* ul 去除点的样式 */
+ul{
+  list-style: none;
+}
+/* 自适应css修改, 手机浏览器触发*/
+@media screen and (max-width: 970px) {
+  .el-header {
+    padding: 0;
+  }
+  .el-main {
+    padding: 0;
+    padding-top: 18px;
+  }
+  /* 首页已发布投票展示 */
+  div .el-card,
+  .box-card {
+    width: 100% !important;
+    margin: 12px 0 0 0;
+  }
+  div .el-card,
+  .box-card:last-child {
+    margin-bottom: 16px;
+  }
+}
