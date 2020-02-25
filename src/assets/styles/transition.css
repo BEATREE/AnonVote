@@ -1,0 +1,15 @@
+/* 全局默认动画 */
+html{
+  scrollbar-width: thin;
+}
+* {
+  transition: all ease 0.2s;
+}
+/* Home 页面路由的动画效果 */
+.homeTransition-enter-active, .homeTransition-leave-active{
+    transition: opacity linear .3s;
+}
+.homeTransition-enter, .homeTransition-leave-to {
+  opacity: 0;
+  position: absolute;
+}

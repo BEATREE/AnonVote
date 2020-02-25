@@ -11,3 +11,30 @@
 //  2.1 进行选择，获取选择
 //  2.2 对选项数据进行加密
 //  2.3 异步发送到远程数据库，本地通过 store 或 缓存 进行修改
+
+<template>
+    <div>
+
+    </div>
+</template>
+
+<script>
+    export default {
+        name: 'Vote',
+        data(){
+            return {
+
+            }
+        },
+        methods: {
+
+        },
+        created(){
+            
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+
+</style>

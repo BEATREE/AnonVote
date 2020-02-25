@@ -2,27 +2,61 @@
   <el-container>
     <Header></Header>
     <el-main style="padding-bottom: 12px;">
-      <Carousel></Carousel>
-      <h1 style="text-align: center;">投票案例</h1>
-      <router-view></router-view>
+      <transition name="homeTransition">
+        <router-view></router-view>
+      </transition>
     </el-main>
     <el-footer>
       <div class="footer">
-        © 201677I0944 肖尊严 |
-        <a href="https://beatree.cn/" target="_blank">做棵大树</a>
+        <div class="webinfo">
+          <div class="footerLogo">
+            <img :src="require('@/assets/img/anonico.png')" alt="AnonVote" />
+          </div>
+          <div class="footerDesc">
+            <div>@ <a href="https://beatree.cn/" style="color: #0c92f3;" target="_blank">Zunyan Xiao 201677I0944</a></div>
+            <div>Designed by Zunyan Xiao, developed by Zunyan Xiao</div>
+          </div>
+        </div>
+        
       </div>
     </el-footer>
   </el-container>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .footer {
-  text-align: center;
   padding-top: 12px;
-  border-top: 1px dashed #0b83f3;
+  background-color: #312f38;
+  height: 110px;
+  color: rgb(228, 227, 227);
+  display: flex;
+  flex-direction: row;
+}
+.footer .webinfo {
+  float: left;
+  height: 110px;
+  display: flex;
+  flex-direction:row;
+  
+}
+.footerDesc{
+  flex-direction: column;
+  margin-left: 12px;
+  margin-top: 23px;
+  div{
+    margin-bottom: 8px;
+  }
+}
+.footerLogo {
+  margin-left: 20%;
+  margin-top: 23px;
+  img {
+    width: 64px;
+  }
 }
 .footer a {
   text-decoration: none;
+  color: rgb(228, 227, 227);
 }
 </style>
 
@@ -31,7 +65,6 @@
 import HelloWorld from '@/components/HelloWorld.vue'
 import Navbar from '@/components/Navbar.vue'
 import Header from '@/components/Header.vue'
-import Carousel from '@/components/Carousel.vue'
 export default {
   name: 'Home',
   data() {
@@ -41,7 +74,6 @@ export default {
     HelloWorld,
     Navbar,
     Header,
-    Carousel,
   },
 }
 </script>

@@ -1,9 +1,5 @@
-/* 全局默认动画 */
-* {
-  transition: all ease 0.2s;
-}
 /* ul 去除点的样式 */
-ul{
+ul {
   list-style: none;
 }
 /* 自适应css修改, 手机浏览器触发*/
@@ -24,5 +20,20 @@ ul{
   div .el-card,
   .box-card:last-child {
     margin-bottom: 16px;
+  }
+  /* 弹框在平板端显示 */
+  .el-dialog {
+    width: 72% !important;
+  }
+}
+/* 卡片在手机移动端显示 */
+@media screen and (max-width: 760px) {
+  .box-card {
+    width: 100%;
+  }
+
+  /* 弹框在手机端显示 */
+  .el-dialog {
+    width: 100% !important;
   }
 }

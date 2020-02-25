@@ -1,28 +1,34 @@
 <template>
   <div id="topicContainer">
-    <!-- <ul class="infinite-list" v-infinite-scroll="moreTopics" infinite-scroll-disabled="disabled" style="padding-bottom: 16px;overflow:auto" >
+    <!-- 首页轮播图 -->
+    <Carousel></Carousel>
+    <h1 style="text-align: center;">投票案例</h1>
+    <div class="cardContainer">
+      <!-- <ul class="infinite-list" v-infinite-scroll="moreTopics" infinite-scroll-disabled="disabled" style="padding-bottom: 16px;overflow:auto" >
       <li v-for="topic in topics" :key="topic.index"> -->
-    <el-card class="box-card" v-for="topic in topics" :key="topic.index">
-      <div slot="header" class="clearfix">
-        <span>{{ topic.tname }}</span>
-        <el-button style="float: right; padding: 3px 0" type="text">
-          <router-link to="about" target="_blank">操作按钮</router-link>
-        </el-button>
-      </div>
-      <p>
-        {{ topic.tdesc }}
-      </p>
-    </el-card>
-    <!-- </li>
+      <el-card class="box-card" v-for="topic in topics" :key="topic.index">
+        <div slot="header" class="clearfix">
+          <span>{{ topic.tname }}</span>
+          <el-button style="float: right; padding: 3px 0" type="text">
+            <router-link to="about" target="_blank">操作按钮</router-link>
+          </el-button>
+        </div>
+        <p>
+          {{ topic.tdesc }}
+        </p>
+      </el-card>
+      <!-- </li>
     </ul> -->
-    <div style="clear: both; text-align:center;margin: 16px 0 12px 0;">
-      <span v-if="loading">加载中...</span>
-      <span v-if="noMore">没有更多了</span>
+      <div style="clear: both; text-align:center;margin: 16px 0 12px 0;">
+        <span v-if="loading">加载中...</span>
+        <span v-if="noMore">没有更多了</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import Carousel from '@/components/Carousel.vue'
 export default {
   name: 'Topic',
   data() {
@@ -122,59 +128,20 @@ export default {
     //   }
     // }
   },
+  components: {
+    Carousel,
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-@media screen and (max-width: 760px) {
-  .box-card {
-    width: 100%;
-  }
-}
 
-#topicContainer {
+
+#topicContainer .cardContainer {
   width: 92%;
   margin: 16px auto;
   margin-bottom: 12px;
   // border: 1px solid red;
 }
-.box-card {
-  width: 31%;
-  height: 170px;
-  float: left;
-  margin-right: 2%;
-  margin-top: 16px;
-  color: #515a6e;
-  border: 1px solid #dcdee2;
-  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  transition: all 0.2s ease-in-out;
-}
-.box-card .el-card__body {
-  padding: 0%;
-}
 
-.box-card:hover {
-  box-shadow: 0 1px 16px rgba(0, 0, 0, 0.4);
-}
-// 卡片说明
-.box-card p {
-  text-indent: 2em;
-  margin: 0;
-  overflow: hidden;
-  vertical-align: bottom;
-  transition: width 0.2s ease 0.2s;
-  // 添加省略号
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-}
-.box-card a {
-  color: #5595ff !important;
-  text-decoration: none;
-}
-.box-card a:hover {
-  color: #66b1ff;
-  text-decoration: none;
-}
 </style>

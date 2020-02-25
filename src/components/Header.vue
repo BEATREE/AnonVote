@@ -16,11 +16,20 @@
           style="height: 43px; border-radius: 6px;"
         ></el-image>
       </el-menu-item>
-      <el-menu-item index="topics" class="hidden-xs-only">
-        全部投票
+      <el-menu-item index="/" class="hidden-xs-only">
+        首页
+      </el-menu-item>
+      <el-menu-item index="example" class="hidden-xs-only">
+        查看示例
       </el-menu-item>
       <el-menu-item index="about" class="hidden-xs-only">
         关于系统
+      </el-menu-item>
+      <el-menu-item  v-if="!loggged">
+        <el-button type="text" @click="dialogLoginVisible = true">登录</el-button>
+      </el-menu-item>
+       <el-menu-item  v-else index="user">
+        个人中心
       </el-menu-item>
       <el-menu-item class="nav-algolia-search">
         <el-autocomplete
@@ -77,6 +86,7 @@ export default {
       keyword: '',
       restaurants: [],
       activeIndex: 'topics',
+      loggged: false, // 判断用户是否登录
     }
   },
 
@@ -133,6 +143,9 @@ export default {
       ]
     },
     handleSelect() {},
+    dialogLoginVisible(){ // 显示登录框
+
+    }
   },
   mounted() {
     this.restaurants = this.loadAll()

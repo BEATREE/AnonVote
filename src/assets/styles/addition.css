@@ -1,0 +1,64 @@
+@import 'transition.css';
+@import 'adaptmobile.css';
+@import 'footer.css';
+
+/* 追加样式 */
+/* 修改ElementUI填满页面 */
+body{
+    margin: 0;
+    padding: 0;
+}
+.el-container{
+    margin: 0;
+    padding: 0;
+}
+.el-header,
+.el-footer {
+  padding: 0;
+}
+.el-main {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* 卡片样式开始 */
+.box-card {
+  width: 31%;
+  height: 170px;
+  float: left;
+  margin-right: 2%;
+  margin-top: 16px;
+  color: #515a6e;
+  border: 1px solid #dcdee2;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  transition: all 0.2s ease-in-out;
+}
+.box-card .el-card__body {
+  padding: 0%;
+}
+
+.box-card:hover {
+  box-shadow: 0 1px 16px rgba(0, 0, 0, 0.4);
+}
+/* // 卡片说明 */
+.box-card p {
+  text-indent: 2em;
+  margin: 15px;
+  overflow: hidden;
+  vertical-align: bottom;
+  transition: width 0.2s ease 0.2s;
+  /* // 添加省略号 */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.box-card a {
+  color: #5595ff !important;
+  text-decoration: none;
+}
+.box-card a:hover {
+  color: #66b1ff;
+  text-decoration: none;
+}
+/* 卡片样式结束 */
