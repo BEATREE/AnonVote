@@ -1,4 +1,7 @@
-# anonvote-cli
+# AnonVote
+
+基于Paillier的匿名投票系统
+
 
 ## Project setup
 ```
