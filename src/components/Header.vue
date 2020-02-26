@@ -10,27 +10,30 @@
       <el-menu-item class="hidden-sm-and-down">
         <el-image class="navlogo" :src="navlogo" fit="fill"></el-image>
       </el-menu-item>
-      <el-menu-item class="hidden-md-and-up">
+      <el-menu-item class="hidden-md-and-up" @click="drawer = true">
         <el-image
           :src="require('@/assets/img/anonico.png')"
-          style="height: 43px; border-radius: 6px;"
+          style="height: 43px;width: 43px;"
         ></el-image>
       </el-menu-item>
       <el-menu-item index="/" class="hidden-xs-only">
         首页
       </el-menu-item>
+      <el-menu-item index="jump" class="hidden-xs-only">
+        认证码直达
+      </el-menu-item>
       <el-menu-item index="example" class="hidden-xs-only">
-        查看示例
+        投票模板
       </el-menu-item>
       <el-menu-item index="about" class="hidden-xs-only">
         关于系统
       </el-menu-item>
-      <el-menu-item  v-if="!loggged">
+      <!-- <el-menu-item  v-if="!loggged">
         <el-button type="text" @click="dialogLoginVisible = true">登录</el-button>
       </el-menu-item>
        <el-menu-item  v-else index="user">
         个人中心
-      </el-menu-item>
+      </el-menu-item> -->
       <el-menu-item class="nav-algolia-search">
         <el-autocomplete
           class="inline-input"
@@ -56,10 +59,7 @@
         </el-submenu> -->
     </el-menu>
 
-    <el-backtop
-      target=".el-menu"
-      :bottom="100"
-    >
+    <el-backtop target=".el-menu" :bottom="100">
       <div
         style="{
         height: 100%;
@@ -74,6 +74,37 @@
         UP
       </div>
     </el-backtop>
+
+    <el-drawer
+      class="hidden-md-and-up"
+      title="AnonVote"
+      :visible.sync="drawer"
+      direction="ltr"
+      :show-close="false"
+      :router="true"
+      size="60%"
+    >
+      <el-menu
+        :default-active="activeIndex"
+        class="el-menu"
+        @select="handleSelect"
+        :router="true"
+      >
+        <el-menu-item index="/" @click="drawer = false">
+          首页
+        </el-menu-item>
+
+        <el-menu-item index="jump" @click="drawer = false">
+          认证码直达
+        </el-menu-item>
+        <el-menu-item index="example" @click="drawer = false">
+          投票模板
+        </el-menu-item>
+        <el-menu-item index="about" @click="drawer = false">
+          关于系统
+        </el-menu-item>
+      </el-menu>
+    </el-drawer>
   </el-header>
 </template>
 
@@ -85,8 +116,9 @@ export default {
       navlogo: require('@/assets/img/anonvotelogo.svg'),
       keyword: '',
       restaurants: [],
-      activeIndex: 'topics',
+      activeIndex: '/',
       loggged: false, // 判断用户是否登录
+      drawer: false,
     }
   },
 
@@ -143,9 +175,9 @@ export default {
       ]
     },
     handleSelect() {},
-    dialogLoginVisible(){ // 显示登录框
-
-    }
+    dialogLoginVisible() {
+      // 显示登录框
+    },
   },
   mounted() {
     this.restaurants = this.loadAll()
@@ -158,7 +190,7 @@ export default {
   height: 36px;
 }
 /* 搜索框样式 */
-li.el-menu-item:last-child {
+li.el-menu-item.nav-algolia-search {
   border-bottom: 0;
   float: right;
   margin-right: 6%;
@@ -168,7 +200,7 @@ li.el-menu-item:last-child {
   .el-header {
     width: 100%;
   }
-  li.el-menu-item:last-child {
+  li.el-menu-item.nav-algolia-search {
     border-bottom: 0;
     float: right;
     margin: 0 auto;

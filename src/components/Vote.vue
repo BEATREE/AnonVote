@@ -1,6 +1,15 @@
-// 无授权码体验页面
+// 投票页面 // 1. 拦截验证 // 1.1 需输入认证码 // 1.2 后台查询返回结果 // 1.3
+进入或退出 // 1.3.1 认证码错误 -> 提示信息 "认证码错误，请勿恶意尝试"，退出页面
+// 1.3.2 认证码正确，投票主题错误 -> 提示信息 "您的投票主题链接错误，请点击 ??
+进行投票" 跳转投票 // 1.3.3 认证码正确，已投过票 -> 提示信息
+"该认证码已失效，仅可用于查看投票信息"，显示目前结果 // 1.3.4 认证成功 ->
+进入投票页面 // 2. 投票操作 // 2.1 进行选择，获取选择 // 2.2 对选项数据进行加密
+// 2.3 异步发送到远程数据库，本地通过 store 或 缓存 进行修改 // 投票页面
 <template>
-  <div class="toVote">
+  <div class="toVote" v-if="verified">
+    
+    <!-- 主体内容开始 -->
+
     <h1 class="topicname">最美程序猿评选</h1>
     <div class="topicinfo">
       发起人：
@@ -23,8 +32,6 @@
       <p>
         很多愿望，我想要的，上苍都给了我，很快或者很慢地，我都一一地接到了。而我对青春的美的渴望，虽然好象一直没有得到，可是走着走着，回过头一看，好象又都已经过去了。有几次，当时并没能马上感觉到，可是，也很有几次，我心里猛然醒悟：原来，这就是青春！
       </p>
-      
-       <h3>主题选项：</h3>
     </div>
     <div class="form">
       <el-card class="box-card" v-for="(option, index) in options" :key="index">
@@ -44,7 +51,7 @@
           v-model="result[index]"
           :true-label="1"
           :false-label="0"
-          :disabled="!chooseAvailable"
+          :disabled="effective"
           border
         >
           我要选TA
@@ -78,7 +85,7 @@
 
 <script>
 export default {
-  name: 'Example',
+  name: 'Vote',
   data() {
     return {
       options: [
@@ -113,7 +120,8 @@ export default {
       ],
       result: [0, 0, 0, 0],
       confirmDialogVisible: false,
-      chooseAvailable: true
+      verified: false, // 判断是否由认证码
+      effective: false, // 判断认证码是否有效
     }
   },
   methods: {
@@ -128,11 +136,48 @@ export default {
         message: '您已提交选票',
         type: 'success',
       })
-      // 隐藏弹框
-      this.confirmDialogVisible = false;
-      this.chooseAvailable = false;
+
       // 显示票数
     },
+    checkEffective() {
+      // 进行身份合法性核查
+      var verified = this.$store.getVerified
+      var effective = this.$store.getEffective
+
+      if (!verified) {
+        // 如果未验证
+        // this.$alert('您的认证码错误，请核查后重新输入', '系统提示', {
+        //   confirmButtonText: '确定',
+        //   showClose: false,
+        //   callback: action => {
+        //     this.$router.push('/jump')
+        //   }
+        // });
+        this.$notify.error({
+          title: "系统提示",
+          message: '您的认证码错误，请核查后重新输入',
+          type: 'error',
+        })
+        this.$router.push('/jump')
+        
+        console.log('before alert')
+      } else if (!effective) {
+        //有认证码，认证码失效
+        this.$message({
+          message: '您的认证码已失效，仅能查看投票信息，无法再进行投票',
+          type: 'warning',
+        })
+        this.verified = true
+      } else {
+        // 认证码可以使用
+        this.effective = true
+        this.verified = true
+      }
+    },
+  },
+  created() {
+    console.log('Before check')
+    this.checkEffective()
   },
 }
 </script>
@@ -142,6 +187,7 @@ export default {
   width: 80%;
   margin: 0 auto;
   font-size: 18px;
+
   h1 {
     text-align: center;
   }
@@ -177,7 +223,7 @@ div.attention {
   border-radius: 5px;
 }
 div.form {
-  // border: 1px solid red;
+  border: 1px solid red;
   width: 90%;
   margin: 0 auto;
 }

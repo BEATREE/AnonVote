@@ -2,7 +2,7 @@
   <el-container>
     <Header></Header>
     <el-main style="padding-bottom: 12px;">
-      <transition name="homeTransition">
+      <transition name="homeTransition el-fade-in-linear">
         <router-view></router-view>
       </transition>
     </el-main>

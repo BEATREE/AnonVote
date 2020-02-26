@@ -4,6 +4,8 @@ import Home from '../views/Home.vue'
 import Topics from '../components/Topics.vue'
 import Example from '../components/Example.vue'
 import About from '../components/About.vue'
+import Vote from '../components/Vote.vue'
+import Jump from '../components/Jump.vue'
 
 Vue.use(VueRouter)
 
@@ -14,9 +16,12 @@ const routes = [
     redirect: '/topics',
     component: Home,
     children: [
-      { path: 'topics', component: Topics },
-      { path: 'example', component: Example },
-      { path: 'about', component: About },
+      {name:'Topic', path: 'topics', component: Topics },
+      { name: 'Example', path: 'example', component: Example },
+      { name: 'About', path: 'about', component: About },
+      { name: 'Jump', path: 'jump', component: Jump},
+      { name: 'Vote', path: 'vote', meta: { requireAuth: true }, component: Vote, },
+      
     ]
   },
   // {

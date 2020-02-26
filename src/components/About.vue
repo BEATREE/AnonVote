@@ -32,6 +32,11 @@
 </template>
 
 <style lang="scss" scoped>
+@media screen and (max-width: 760px){
+ div.about{
+   width: 80%;
+ } 
+}
 .about {
   width: 60%;
   margin: 0 auto;

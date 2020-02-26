@@ -4,13 +4,13 @@
 
 /* 追加样式 */
 /* 修改ElementUI填满页面 */
-body{
-    margin: 0;
-    padding: 0;
+body {
+  margin: 0;
+  padding: 0;
 }
-.el-container{
-    margin: 0;
-    padding: 0;
+.el-container {
+  margin: 0;
+  padding: 0;
 }
 .el-header,
 .el-footer {
@@ -26,7 +26,7 @@ body{
   width: 31%;
   height: 170px;
   float: left;
-  margin-right: 2%;
+  margin-left: 1.5%;
   margin-top: 16px;
   color: #515a6e;
   border: 1px solid #dcdee2;
