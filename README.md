@@ -2,7 +2,6 @@
 
 基于Paillier的匿名投票系统
 
-
 ## Project setup
 ```
 npm install
@@ -20,3 +19,4 @@ npm run build
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
