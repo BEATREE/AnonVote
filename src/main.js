@@ -6,7 +6,7 @@ import Element from 'element-ui';
 import axios from 'axios';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'element-ui/lib/theme-chalk/display.css';
-import '@/assets/styles/addition.css';
+import '@/assets/styles/addition.scss';
 
 
 Vue.config.productionTip = false

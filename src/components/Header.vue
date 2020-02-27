@@ -16,7 +16,7 @@
           style="height: 43px;width: 43px;"
         ></el-image>
       </el-menu-item>
-      <el-menu-item index="/" class="hidden-xs-only">
+      <el-menu-item index="topics" class="hidden-xs-only">
         首页
       </el-menu-item>
       <el-menu-item index="jump" class="hidden-xs-only">
@@ -34,15 +34,17 @@
        <el-menu-item  v-else index="user">
         个人中心
       </el-menu-item> -->
-      <el-menu-item class="nav-algolia-search">
-        <el-autocomplete
+      <el-menu-item class="nav-algolia-right" v-if="!loggged">
+        <!-- <el-autocomplete
           class="inline-input"
           v-model="keyword"
           :fetch-suggestions="querySearch"
           placeholder="搜索投票主题"
           :trigger-on-focus="false"
           prefix-icon="el-icon-search"
-        ></el-autocomplete>
+        ></el-autocomplete> -->
+        <el-button type="primary" round @click="goTo('login')">登录</el-button>
+        <el-button round @click="goTo('register')">注册</el-button>
       </el-menu-item>
 
       <!-- <el-submenu index="2">
@@ -77,7 +79,7 @@
 
     <el-drawer
       class="hidden-md-and-up"
-      title="AnonVote"
+      title="AnonVote匿名投票"
       :visible.sync="drawer"
       direction="ltr"
       :show-close="false"
@@ -115,7 +117,7 @@ export default {
     return {
       navlogo: require('@/assets/img/anonvotelogo.svg'),
       keyword: '',
-      restaurants: [],
+      // restaurants: [],
       activeIndex: '/',
       loggged: false, // 判断用户是否登录
       drawer: false,
@@ -124,12 +126,24 @@ export default {
 
   methods: {
     querySearch(queryString, cb) {
-      var restaurants = this.restaurants
-      var results = queryString
-        ? restaurants.filter(this.createFilter(queryString))
-        : restaurants
-      // 调用 callback 返回建议列表的数据
-      cb(results)
+      // var restaurants = this.restaurants
+      // var results = queryString
+      //   ? restaurants.filter(this.createFilter(queryString))
+      //   : restaurants
+      // // 调用 callback 返回建议列表的数据
+      // cb(results)
+    },
+    goTo(word){
+      if(word == 'login'){
+        this.$router.push('/login');
+      }else{
+        this.$router.push({
+          name: 'Login',
+          params:{
+            activename: 'second'
+          }
+        })
+      }
     },
     createFilter(queryString) {
       return restaurant => {
@@ -180,7 +194,8 @@ export default {
     },
   },
   mounted() {
-    this.restaurants = this.loadAll()
+    this.restaurants = this.loadAll();
+    this.activeIndex = this.$route.path.substring(1);// 初始化导航栏激活页面
   },
 }
 </script>
@@ -190,17 +205,16 @@ export default {
   height: 36px;
 }
 /* 搜索框样式 */
-li.el-menu-item.nav-algolia-search {
+li.el-menu-item.nav-algolia-right {
   border-bottom: 0;
   float: right;
   margin-right: 6%;
 }
-
 @media (max-width: 980px) {
   .el-header {
     width: 100%;
   }
-  li.el-menu-item.nav-algolia-search {
+  li.el-menu-item.nav-algolia-right {
     border-bottom: 0;
     float: right;
     margin: 0 auto;

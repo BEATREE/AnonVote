@@ -3,7 +3,7 @@ html{
   scrollbar-width: thin;
 }
 * {
-  transition: all ease 0.2s;
+  transition: all ease 0.3s;
 }
 /* Home 页面路由的动画效果 */
 .homeTransition-enter-active, .homeTransition-leave-active{

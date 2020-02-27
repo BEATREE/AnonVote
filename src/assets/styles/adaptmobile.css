@@ -1,8 +1,4 @@
 /* 提高移动端滚动流畅度 */
-body {
-  -webkit-overflow-scrolling: touch;
-  overflow-scrolling: touch;
-}
 
 /* ul 去除点的样式 */
 ul {

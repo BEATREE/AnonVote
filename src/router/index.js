@@ -16,25 +16,30 @@ const routes = [
     redirect: '/topics',
     component: Home,
     children: [
-      {name:'Topic', path: 'topics', component: Topics },
+      { name: 'Topic', path: 'topics', component: Topics },
       { name: 'Example', path: 'example', component: Example },
       { name: 'About', path: 'about', component: About },
-      { name: 'Jump', path: 'jump', component: Jump},
+      { name: 'Jump', path: 'jump', component: Jump },
       { name: 'Vote', path: 'vote', meta: { requireAuth: true }, component: Vote, },
-      
+
     ]
   },
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // },
+  {
+    path: '/login',
+    name: 'Login',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
+  },
+  {
+    path: '/forgotpassword',
+    name: 'Forgotpassword',
+    component: () => import('../views/Forgotpassword.vue')
+  },
   {
     path: '*',
-    redirect: '/about'
+    redirect: '/'
   }
 ]
 
