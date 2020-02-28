@@ -64,6 +64,7 @@ export default {
 <style scoped lang="scss">
   .ValidCode{
     display: flex;
+    // display: inline-block;
     justify-content: center;
     align-items: center;
     cursor: pointer;

@@ -16,7 +16,7 @@
           style="height: 43px;width: 43px;"
         ></el-image>
       </el-menu-item>
-      <el-menu-item index="topics" class="hidden-xs-only">
+      <el-menu-item index="index" class="hidden-xs-only">
         首页
       </el-menu-item>
       <el-menu-item index="jump" class="hidden-xs-only">
@@ -92,7 +92,7 @@
         @select="handleSelect"
         :router="true"
       >
-        <el-menu-item index="/" @click="drawer = false">
+        <el-menu-item index="index" @click="drawer = false">
           首页
         </el-menu-item>
 

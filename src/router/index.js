@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Topics from '../components/Topics.vue'
+import Index from '../components/Index.vue'
 import Example from '../components/Example.vue'
 import About from '../components/About.vue'
 import Vote from '../components/Vote.vue'
@@ -13,10 +13,10 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    redirect: '/topics',
+    redirect: '/index',
     component: Home,
     children: [
-      { name: 'Topic', path: 'topics', component: Topics },
+      { name: 'Index', path: 'index', component: Index },
       { name: 'Example', path: 'example', component: Example },
       { name: 'About', path: 'about', component: About },
       { name: 'Jump', path: 'jump', component: Jump },
