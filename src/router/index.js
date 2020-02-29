@@ -24,6 +24,7 @@ const routes = [
 
     ]
   },
+  // 登录路由
   {
     path: '/login',
     name: 'Login',
@@ -32,10 +33,30 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
   },
+  // 重置密码路由
   {
     path: '/forgotpassword',
     name: 'Forgotpassword',
     component: () => import('../views/Forgotpassword.vue')
+  },
+  // 用户后台路由
+  {
+    path: '/user',
+    name: 'User',
+    redirect: '/user/index',
+    component: ()=>import("../views/User.vue"),
+    children:[
+      { name: 'UserIndex', path: 'index', component: () => import('../components/User/Index.vue') },
+      {name: 'Add', path: 'add', component: ()=>import('../components/User/Add.vue')},
+      {name: 'Manage', path: 'manage', component: ()=>import('../components/User/Manage.vue')},
+      { name: 'Message', path: 'message', component: () => import('../components/User/Message.vue') },
+      { name: 'Profile', path: 'profile', component: () => import('../components/User/Profile.vue') },
+      { name: 'Reedit', path: 'reedit', component: () => import('../components/User/Reedit.vue') },
+    ]
+  },
+  {
+    path: '/test',
+    component: ()=> import('../components/utils/Test.vue')
   },
   {
     path: '*',

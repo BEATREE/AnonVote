@@ -1,15 +1,21 @@
 /* 全局默认动画 */
-html{
+html {
+  /* 可以美化界面，但是会造成移动端的迟钝 */
   scrollbar-width: thin;
 }
 * {
+  /* 这是你尝试了20分钟验证的!！ 不能动，否则会导致侧滑栏闪动 */
   transition: all ease 0.3s;
 }
 /* Home 页面路由的动画效果 */
-.homeTransition-enter-active, .homeTransition-leave-active{
-    transition: opacity linear .3s;
+.homeTransition-enter-active,
+.homeTransition-leave-active {
+  transition: opacity 0.38s linear;
 }
-.homeTransition-enter, .homeTransition-leave-to {
+.homeTransition-enter,
+.homeTransition-leave-to,
+.el-zoom-in-center-enter,
+.el-zoom-in-center-leave-to {
   opacity: 0;
   position: absolute;
 }

@@ -61,7 +61,7 @@
                 </el-form-item>
                 <el-form-item>
                   <el-button type="primary" v-on:click="onStep1('emailForm')">
-                    登录
+                    确定
                   </el-button>
                 </el-form-item>
               </el-form>

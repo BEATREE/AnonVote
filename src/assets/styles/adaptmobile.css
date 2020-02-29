@@ -4,8 +4,26 @@
 ul {
   list-style: none;
 }
-/* 自适应css修改, 手机浏览器触发*/
-@media screen and (max-width: 970px) {
+/* 卡片在手机移动端显示 */
+@media screen and (max-width: 760px) {
+  html {
+    scrollbar-width: normal;
+  }
+  div .el-card,
+  .box-card {
+    width: 100% !important;
+  }
+
+  /* 弹框在手机端显示 */
+  .el-dialog {
+    width: 100% !important;
+  }
+}
+/* 自适应css修改, 平板触发*/
+@media screen and (min-width: 760px) and (max-width: 970px) {
+  html {
+    scrollbar-width: normal;
+  }
   .el-header {
     padding: 0;
   }
@@ -16,8 +34,8 @@ ul {
   /* 首页已发布投票展示 */
   div .el-card,
   .box-card {
-    width: 100% !important;
-    margin: 12px 0 0 0;
+    width: 46% !important;
+    margin: 12px 12px 0 0;
   }
   div .el-card,
   .box-card:last-child {
@@ -26,16 +44,5 @@ ul {
   /* 弹框在平板端显示 */
   .el-dialog {
     width: 72% !important;
-  }
-}
-/* 卡片在手机移动端显示 */
-@media screen and (max-width: 760px) {
-  .box-card {
-    width: 100%;
-  }
-
-  /* 弹框在手机端显示 */
-  .el-dialog {
-    width: 100% !important;
   }
 }

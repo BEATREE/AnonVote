@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+// 读取本地用户设置
+var initColor = JSON.parse(localStorage.getItem('primaryColor')) || "#409eff";
 var initUserInfo = JSON.parse(localStorage.getItem('userinfo')) || {
   uid: "", // user id
   uname: "", // 用户名称
@@ -44,45 +46,45 @@ const targetTopic = {
     participantName: '',//投票人名称
   },
   mutations: {
-    setTopicId(state, id){
+    setTopicId(state, id) {
       state.topicId = id;
     },
-    setTopicName(state, name){
+    setTopicName(state, name) {
       state.topicName = name;
     },
-    setTopicDesc(state, desc){
+    setTopicDesc(state, desc) {
       state.topicDesc = desc
     },
-    setSponsor(state, name){
+    setSponsor(state, name) {
       state.sponsor = name;
     },
-    setOptions(state, options){
-      for(var i=0; i < options.length; i++){
+    setOptions(state, options) {
+      for (var i = 0; i < options.length; i++) {
         state.options[i] = options[i];
       }
     },
-    setParticipantName(state, name){
+    setParticipantName(state, name) {
       state.participantName = name;
     }
   },
   getters: {
     //获取state仓储中的数据
-    getTopicId(state){
+    getTopicId(state) {
       return state.topicId;
     },
-    getTopicName(state){
+    getTopicName(state) {
       return state.topicName;
     },
-    getTopicDesc(state){
+    getTopicDesc(state) {
       return state.topicDesc;
     },
-    getSponsor(state){
+    getSponsor(state) {
       return state.sponsor;
     },
-    getOptions(state){
+    getOptions(state) {
       return state.options;
     },
-    getParticipantName(state){
+    getParticipantName(state) {
       return state.participantName;
     }
   }
@@ -92,9 +94,27 @@ export default new Vuex.Store({
   state: {
     logged: false,
     userInfo: initUserInfo,
-
+    primaryColor: initColor,  // 当前主题颜色
+    themeColors: [{
+      value: '#409eff',
+      label: '主题蓝'
+    }, {
+      value: '#40FFDF',
+      label: '荧光绿'
+    }, {
+      value: '#BC40FF',
+      label: '高贵紫'
+    }, {
+      value: '#E6A23C',
+      label: '活力橙'
+    }],
   },
   mutations: {
+    changePrimaryColor(state, newColor) {
+      state.primaryColor = newColor;
+      // console.log(JSON.stringify(state.primaryColor))
+      localStorage.setItem('primaryColor', JSON.stringify(state.primaryColor));
+    },
 
   },
   actions: {
@@ -104,8 +124,14 @@ export default new Vuex.Store({
     targetTopic: targetTopic,
   },
   getters: {
-    getLoginStatus(state) {
+    getLoginStatus(state) {    // 返回当前登录状态
       return state.logged;
+    },
+    getPrimaryColor(state) {   // 返回选用的主题颜色
+      return state.primaryColor;
+    },
+    getThemeColors(state) {    // 返回所有主题颜色
+      return state.themeColors;
     },
   }
 })

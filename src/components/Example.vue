@@ -52,11 +52,12 @@
       </el-card>
     </div>
     <div class="submit">
-      <el-button type="primary" @click="confirmDialogVisible = true">
+      <el-button type="primary" @click="confirmDialogVisible = true" :disabled="!chooseAvailable">
         点击提交
       </el-button>
       <el-dialog
         title="提示"
+        v-if="confirmDialogVisible"
         :visible.sync="confirmDialogVisible"
         width="30%"
         center
