@@ -4,6 +4,7 @@
 ul {
   list-style: none;
 }
+
 /* 卡片在手机移动端显示 */
 @media screen and (max-width: 760px) {
   html {
@@ -17,6 +18,21 @@ ul {
   /* 弹框在手机端显示 */
   .el-dialog {
     width: 100% !important;
+  }
+  /* 登录注册，找回密码手机端样式 */
+  div.findPasswd, div.loginContainer{
+    width: 100% !important;
+    div.logo a img{
+      width: 50% !important;
+      margin-left: 25% !important;
+    }
+  }
+  div.login-box{
+    width: auto;
+  }
+  // 手机端用户后台表单样式
+  form.userForm{
+    margin-left: -38px !important;
   }
 }
 /* 自适应css修改, 平板触发*/

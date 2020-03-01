@@ -7,6 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@tinymce/tinymce-vue": "^3.2.0",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "element-ui": "^2.13.0",
@@ -14,6 +15,7 @@
     "sass-loader": "^8.0.2",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
+    "tinymce": "^5.2.0",
     "vue": "^2.6.11",
     "vue-router": "^3.1.5",
     "vuex": "^3.1.2"
