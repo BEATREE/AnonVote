@@ -58,7 +58,7 @@
           <el-button
             type="primary"
             icon="el-icon-caret-right"
-            @click="nextStep"
+            @click="nextStep('addTopicForm')"
           >
             下一步
           </el-button>
@@ -130,7 +130,7 @@
             <el-button
               type="primary"
               icon="el-icon-caret-right"
-              @click="nextStep"
+              @click="nextStep('addTopicForm')"
             >
               下一步
             </el-button>
@@ -210,9 +210,9 @@
           <el-button
             type="primary"
             icon="el-icon-caret-right"
-            @click="nextStep"
+            @click="submitForm('addTopicForm')"
           >
-            下一步
+            确定发布
           </el-button>
           <el-button
             type="success"
@@ -302,7 +302,8 @@ export default {
       tinymceDisabled: false,
       achieveStep: 0,
       collapseActiveNames: [0],
-      collapseActiveNames2: [0],
+      // collapseActiveNames2: [0],
+      showDialog: false,
     }
   },
   methods: {
@@ -322,8 +323,12 @@ export default {
       this.achieveStep -= 1
     },
     // 当点击下一步
-    nextStep() {
-      this.achieveStep += 1
+    nextStep(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.achieveStep += 1
+        }
+      })
     },
     removeItem(item, name) {
       if (name == 'options') {
@@ -378,6 +383,19 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       return isJPG && isLt2M
+    },
+    // 提交表单
+    submitForm(formName) {
+      // 为表单绑定验证功能
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
+          // this.$router.push("/main");
+          // this.axios.post('register.php', this.form).then(response => {})
+        } else {
+          // this.showDialog = true;
+        }
+      })
     },
   },
   components: {

@@ -7,6 +7,7 @@ import axios from 'axios';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'element-ui/lib/theme-chalk/display.css';
 import '@/assets/styles/addition.scss';
+import moment from 'moment';
 
 
 Vue.config.productionTip = false
@@ -16,10 +17,19 @@ Vue.prototype.axios = axios;
 // axios.defaults.headers = {
 //   "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
 // }
-
+// 无限滚动组件
+var infiniteScroll = require('vue-infinite-scroll');
+Vue.use(infiniteScroll)
 Vue.use(Element);
 
-
+Vue.filter('dateFormat', function (dataStr, pattern = "YYYY-MM-DD HH:mm:ss"){
+  // if(dataStr != null){
+  //   return moment(dataStr).format(parent);
+  // }else{
+  //   return "今天";
+  // }
+  return moment(dataStr).format(pattern);
+})
 // router.beforeEach((to, from, next) => {
 
 //   // 判断路由是否需要验证权限
