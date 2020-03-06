@@ -57,7 +57,6 @@
             router
             style="width: auto;"
           >
-
             <el-menu-item index="/user/index" @click="drawer = false">
               <i class="el-icon-s-home"></i>
               <span slot="title">后台首页</span>
@@ -185,7 +184,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'User',
   data() {
@@ -261,8 +259,7 @@ export default {
     // 退出系统
     logout() {
       localStorage.removeItem('currentUser')
-      localStorage.removeItem('userinfo')
-      this.$store.commit('clearTodos')
+      localStorage.removeItem('userInfo')
       this.$router.push('/login')
       // 清除服务器端登录数据
       //   this.axios.get('logout.php').then(response => {
@@ -284,7 +281,7 @@ export default {
     },
   },
   created() {
-    //   this.checkLogin();// 判断是否登录
+    this.checkLogin() // 判断是否登录
     this.setThemeColors()
     this.isActive = this.$route.path.split('/')[
       this.$route.path.split('/').length - 1
@@ -296,8 +293,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.el-main{
+.el-main {
   padding: 15px;
 }
 .header {
@@ -323,5 +319,4 @@ export default {
   }
   min-height: 100vh;
 }
-
 </style>

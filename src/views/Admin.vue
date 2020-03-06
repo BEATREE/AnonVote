@@ -62,7 +62,6 @@
             router
             style="width: auto;"
           >
-
             <el-menu-item index="/user/index" @click="drawer = false">
               <i class="el-icon-s-home"></i>
               <span slot="title">后台首页</span>
@@ -190,7 +189,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'User',
   data() {
@@ -247,7 +245,7 @@ export default {
 
     // 登录拦截器
     checkLogin() {
-      var loginStatus = localStorage.getItem('currentUser') || false
+      var loginStatus = localStorage.getItem('currentAdmin') || false
       if (!loginStatus) {
         this.$router.push('/login')
       } else {
@@ -265,9 +263,8 @@ export default {
     },
     // 退出系统
     logout() {
-      localStorage.removeItem('currentUser')
-      localStorage.removeItem('userinfo')
-      this.$store.commit('clearTodos')
+      localStorage.removeItem('currentAdmin')
+      localStorage.removeItem('adminInfo')
       this.$router.push('/login')
       // 清除服务器端登录数据
       //   this.axios.get('logout.php').then(response => {
@@ -289,7 +286,7 @@ export default {
     },
   },
   created() {
-    //   this.checkLogin();// 判断是否登录
+    this.checkLogin() // 判断是否登录
     this.setThemeColors()
     this.isActive = this.$route.path.split('/')[
       this.$route.path.split('/').length - 1
@@ -301,8 +298,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.el-main{
+.el-main {
   padding: 15px;
 }
 .header {
@@ -328,5 +324,4 @@ export default {
   }
   min-height: 100vh;
 }
-
 </style>

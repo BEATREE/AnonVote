@@ -12,7 +12,7 @@ import moment from 'moment';
 
 Vue.config.productionTip = false
 
-// axios.defaults.baseURL = 'api/'     // 生产环境下的api
+axios.defaults.baseURL = 'http://localhost:8088/api/'     // 开发环境下的api
 Vue.prototype.axios = axios;
 // axios.defaults.headers = {
 //   "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"

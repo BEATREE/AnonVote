@@ -5,12 +5,19 @@ Vue.use(Vuex)
 
 // 读取本地用户设置
 var initColor = JSON.parse(localStorage.getItem('primaryColor')) || "#409eff";
-var initUserInfo = JSON.parse(localStorage.getItem('userinfo')) || {
+var initUserInfo = JSON.parse(localStorage.getItem('userInfo')) || {
   uid: "", // user id
   uname: "", // 用户名称
   uhead: "", // 用户头像
   uemail: "",//用户邮箱
-
+  token: "",// 用户token
+};
+var initAdminInfo = JSON.parse(localStorage.getItem('adminInfo')) || {
+  uid: "", // user id
+  uname: "", // 用户名称
+  uhead: "", // 用户头像
+  uemail: "",//用户邮箱
+  token: "",// 用户token
 };
 // 访问认证模块
 const verification = {
@@ -94,6 +101,7 @@ export default new Vuex.Store({
   state: {
     logged: false,
     userInfo: initUserInfo,
+    adminInfo: initAdminInfo,
     primaryColor: initColor,  // 当前主题颜色
     themeColors: [{
       value: '#409eff',
@@ -115,7 +123,16 @@ export default new Vuex.Store({
       // console.log(JSON.stringify(state.primaryColor))
       localStorage.setItem('primaryColor', JSON.stringify(state.primaryColor));
     },
-
+    // 设置用户信息
+    setUserInfo(state, userInfo){
+      state.userInfo = userInfo;
+      localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    },
+    // 设置管理员信息
+    setAdminInfo(state, adminInfo){
+      state.adminInfo = adminInfo;
+      localStorage.setItem('adminInfo', JSON.stringify(adminInfo));
+    }
   },
   actions: {
   },

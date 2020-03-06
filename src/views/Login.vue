@@ -19,18 +19,18 @@
             label-width="80px"
           >
             <h3 class="login-title">欢迎登录</h3>
-            <el-form-item label="账号" prop="email">
+            <el-form-item label="账号" prop="uemail">
               <el-input
                 type="text"
                 placeholder="请输入账号"
-                v-model="form.email"
+                v-model="form.uemail"
               />
             </el-form-item>
-            <el-form-item label="密码" prop="password">
+            <el-form-item label="密码" prop="upassword">
               <el-input
-                type="password"
+                type="upassword"
                 placeholder="请输入密码"
-                v-model="form.password"
+                v-model="form.upassword"
                 show-password
               />
             </el-form-item>
@@ -61,7 +61,7 @@
               <el-upload
                 class="avatar-uploader"
                 name="userheadpic"
-                action="http://localhost:3000/fileupload.php"
+                action="http://localhost:8088/api/upload/img"
                 :with-credentials="true"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
@@ -72,25 +72,25 @@
               </el-upload>
             </el-form-item>
 
-            <el-form-item label="昵称" prop="username">
+            <el-form-item label="昵称" prop="uname">
               <el-input
                 type="text"
                 placeholder="请输入昵称"
-                v-model="form.username"
+                v-model="form.uname"
               />
             </el-form-item>
-            <el-form-item label="邮箱" prop="email">
+            <el-form-item label="邮箱" prop="uemail">
               <el-input
                 type="text"
                 placeholder="请输入邮箱，邮箱将被用来登录"
-                v-model="form.email"
+                v-model="form.uemail"
               />
             </el-form-item>
-            <el-form-item label="密码" prop="password">
+            <el-form-item label="密码" prop="upassword">
               <el-input
-                type="password"
+                type="upassword"
                 placeholder="请输入密码"
-                v-model="form.password"
+                v-model="form.upassword"
                 show-password
               />
             </el-form-item>
@@ -121,18 +121,16 @@ export default {
   data() {
     return {
       form: {
-        username: '',
-        password: '',
-        email: '',
-        userhead: '',
+        uname: '',
+        upassword: '',
+        uemail: '',
+        uhead: '',
       },
 
       // 表单验证，需要在 el-form-item 元素中增加 prop 属性
       rules: {
-        username: [
-          { required: true, message: '账号不可为空', trigger: 'blur' },
-        ],
-        email: [
+        uname: [{ required: true, message: '账号不可为空', trigger: 'blur' }],
+        uemail: [
           { required: true, message: '邮箱不可为空', trigger: 'blur' },
           {
             type: 'email',
@@ -140,7 +138,7 @@ export default {
             trigger: ['blur', 'change'],
           },
         ],
-        password: [
+        upassword: [
           { required: true, message: '密码不可为空', trigger: 'blur' },
         ],
       },
@@ -176,9 +174,13 @@ export default {
       // 查看登录状态
       var loginStatus = localStorage.getItem('currentUser') || false
       if (!loginStatus) {
+        if (localStorage.getItem('currentAdmin')) {
+          // 管理员是否存在
+          this.$router.push('/admin')
+        }
         return
       } else {
-        this.$router.push('/admin')
+        this.$router.push('/user')
       }
     },
     onLogin(formName) {
@@ -187,30 +189,47 @@ export default {
         if (valid) {
           // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
           // this.$router.push("/main");
-          this.axios.post('login.php', this.form).then(response => {
-            let res = response.data //用res承接返回后台的json文件(像使用数组那样)
-            if (res.status == '1') {
-              //显示登录结果
-              console.log('登录成功')
-              localStorage.setItem('currentUser', true)
-              this.$message({
-                message: 'Bingo, 登录成功！',
-                type: 'success',
-              })
-              this.$store.commit('setUserInfo', {
-                userid: res.uid,
-                username: res.uname,
-                headImg: res.uhead,
-                useremail: res.uemail,
-              })
-              this.$router.push('/admin')
-            } else {
-              console.log('登录失败')
-              console.log(response)
-              // 弹出登录失败的提示
-              this.$message.error('用户名或密码不正确，登录失败！')
-            }
-          })
+          this.axios
+            .post('user/login', this.form)
+            .then(response => {
+              let res = response.data //用res承接返回后台的json文件(像使用数组那样)
+              if (res.status == 1) {
+                //显示登录结果
+                console.log('登录成功')
+                this.$message({
+                  message: 'Bingo, 登录成功！',
+                  type: 'success',
+                })
+                if (res.flag == 1) {
+                  localStorage.setItem('currentAdmin', true)
+                  // 管理员身份
+                  this.$store.commit('setAdminInfo', {
+                    uid: res.user.uid,
+                    uname: res.user.uname,
+                    headImg: res.user.uhead,
+                    uemail: res.user.uemail,
+                    token: res.token,
+                  })
+                  this.$router.push('/admin')
+                } else {
+                  localStorage.setItem('currentUser', true)
+                  this.$store.commit('setUserInfo', {
+                    uid: res.user.uid,
+                    uname: res.user.uname,
+                    headImg: res.user.uhead,
+                    uemail: res.user.uemail,
+                    token: res.token,
+                  })
+                  this.$router.push('/user')
+                }
+              } else {
+                console.log('登录失败')
+                console.log(response)
+                var returnMsg = res.message
+                // 弹出登录失败的提示
+                this.$message.error(returnMsg)
+              }
+            })
         } else {
           this.dialogVisible = true
           return false
@@ -223,39 +242,41 @@ export default {
         if (valid) {
           // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
           // this.$router.push("/main");
-          this.axios.post('register.php', this.form).then(response => {
-            let res = response.data //用res承接返回后台的json文件(像使用数组那样)
-            console.log(res)
-            if (res.status == '1') {
-              //显示登录结果
-              console.log('注册成功')
-              localStorage.setItem('currentUser', true)
-              this.$message({
-                message: '恭喜你，注册成功，已自动登录',
-                type: 'success',
-              })
-              this.$store.commit('setUserInfo', {
-                userid: res.uid,
-                username: res.uname,
-                headImg: res.uhead,
-                useremail: res.uemail,
-              })
-              this.$router.push('/admin')
-            } else if (res.status == '2') {
-              console.log('注册失败')
-              console.log(response)
-              // 弹出登录失败的提示框
-              this.$message({
-                message: '当前邮箱已被注册！',
-                type: 'warning',
-              })
-            } else {
-              console.log('注册失败')
-              console.log(response)
-              // 弹出登录失败的提示框
-              this.$message.error('帐号注册失败！')
-            }
-          })
+          this.axios
+            .post('user/register', this.form)
+            .then(response => {
+              let res = response.data //用res承接返回后台的json文件(像使用数组那样)
+              console.log(res)
+              if (res.status == '1') {
+                //显示登录结果
+                console.log('注册成功')
+                localStorage.setItem('currentUser', true)
+                this.$message({
+                  message: '恭喜您，注册成功，已自动登录',
+                  type: 'success',
+                })
+                this.$store.commit('setUserInfo', {
+                  uid: res.user.uid,
+                  uname: res.user.uname,
+                  uhead: res.user.uhead,
+                  uemail: res.user.uemail,
+                })
+                this.$router.push('/admin')
+              } else if (res.status == '2') {
+                console.log('注册失败')
+                console.log(response)
+                // 弹出登录失败的提示框
+                this.$message({
+                  message: '当前邮箱已被注册！',
+                  type: 'warning',
+                })
+              } else {
+                console.log('注册失败')
+                console.log(response)
+                // 弹出登录失败的提示框
+                this.$message.error('帐号注册失败！')
+              }
+            })
         } else {
           this.dialogVisible = true
           return false
@@ -267,7 +288,8 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
-      this.form.userhead = res.storepath
+      // api需返回storepath
+      this.form.uhead = res.storepath
       // console.log(res)
     },
     beforeAvatarUpload(file) {
@@ -289,6 +311,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
