@@ -150,5 +150,11 @@ export default new Vuex.Store({
     getThemeColors(state) {    // 返回所有主题颜色
       return state.themeColors;
     },
+    getUserInfo(state){       // 返回用户信息
+      return state.userInfo;
+    },
+    getAdminInfo(state){      // 返回管理员信息
+      return state.adminInfo;
+    }
   }
 })

@@ -40,11 +40,11 @@
                 :model="emailInfo"
                 :rules="rules1"
               >
-                <el-form-item label="邮箱地址:" prop="address">
+                <el-form-item label="邮箱地址:" prop="uemail">
                   <el-input
                     placeholder="请输入您的注册邮箱"
                     prefix-icon="el-icon-message"
-                    v-model="emailInfo.address"
+                    v-model="emailInfo.uemail"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="验证码:" style="" prop="validcode">
@@ -155,7 +155,7 @@ export default {
     return {
       // 步骤一表单数据
       emailInfo: {
-        address: '',
+        uemail: '',
         validcode: '',
       },
       // 步骤三表单数据
@@ -170,7 +170,7 @@ export default {
 
       // 表单验证，需要在 el-form-item 元素中增加 prop 属性
       rules1: {
-        address: [
+        uemail: [
           { required: true, message: '邮箱不可为空', trigger: 'blur' },
           {
             type: 'email',

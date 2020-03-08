@@ -122,11 +122,11 @@
                 <!-- 选项头像 -->
                 <el-avatar
                   :size="40"
-                  v-if="userInfo.headpic != '' && userInfo.headpic != null"
-                  :src="userInfo.headpic"
+                  v-if="userInfo.uhead != '' && userInfo.uhead != null"
+                  :src="userInfo.uhead"
                 ></el-avatar>
                 <el-avatar :size="40" v-else>
-                  {{ userInfo.name.substring(0, 1) }}
+                  {{ userInfo.uname.substring(0, 1) }}
                 </el-avatar>
               </el-tooltip>
             </li>
@@ -197,11 +197,7 @@ export default {
       popovervisible: false, // 设置确认框
       isActive: '',
       switchIcon: 'el-icon-s-fold', // 控制图标的样式
-      userInfo: {
-        email: 'beatree@qq.com',
-        name: '做棵大树',
-        headpic: 'http://lab.beatree.cn/teen-todo/upfile/2020-02-29/0.jpg',
-      },
+      userInfo: {},
     }
   },
   methods: {
@@ -256,6 +252,9 @@ export default {
         position: 'bottom-right',
       })
     },
+    getUserInfo(){
+      this.userInfo = this.$store.getters.getUserInfo;
+    },
     // 退出系统
     logout() {
       localStorage.removeItem('currentUser')
@@ -287,7 +286,7 @@ export default {
       this.$route.path.split('/').length - 1
     ]
     this.setPrimaryColor()
-    // this.getUserInfo();       // 获取用户信息
+    this.getUserInfo();       // 获取用户信息
   },
 }
 </script>

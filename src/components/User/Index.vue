@@ -7,7 +7,8 @@
           <router-link to="about" target="_blank">前往查看</router-link>
         </el-button>
       </div>
-      <p>很多愿望，我想要的，上苍都给了我，很快或者很慢地，我都一一地接到了。而我对青春的美的渴望，虽然好象一直没有得到，可是走着走象一直没有得到，可是走着走</p>
+      <p v-if="initInfo.notices != null">{{initInfo.notices[0].content}}</p>
+      <p v-else>暂时没有通知</p>
     </el-card>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
@@ -16,7 +17,7 @@
           <router-link to="about" target="_blank">前往查看</router-link>
         </el-button>
       </div>
-      <h1>12</h1>
+      <h1>{{initInfo.allTopicCount}}</h1>
     </el-card>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
@@ -25,7 +26,7 @@
           <router-link to="about" target="_blank">前往查看</router-link>
         </el-button>
       </div>
-      <h1>12</h1>
+      <h1>{{initInfo.allTopicCount - initInfo.closedTopicCount}}</h1>
     </el-card>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
@@ -34,13 +35,40 @@
           <router-link to="about" target="_blank">前往查看</router-link>
         </el-button>
       </div>
-      <h1>12</h1>
+      <h1>{{initInfo.closedTopicCount}}</h1>
     </el-card>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  name: "UserIndex",
+  data(){
+    return {
+      initInfo:{}
+    }
+  },
+  methods:{
+    userInit(){
+      var token = this.$store.getters.getUserInfo.token;
+      console.log(token);
+      this.axios.get("user/userinit", {
+        headers:{
+          token: token,
+        }
+      }).then(response => {
+          var res = response.data;
+          if(res.status = 1){
+            this.initInfo = res;
+          }
+      })
+    }
+  },
+  created(){
+    this.userInit();
+  }
+  
+}
 </script>
 
 <style lang="scss" scoped>

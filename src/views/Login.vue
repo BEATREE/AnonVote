@@ -206,7 +206,7 @@ export default {
                   this.$store.commit('setAdminInfo', {
                     uid: res.user.uid,
                     uname: res.user.uname,
-                    headImg: res.user.uhead,
+                    uhead: res.user.uhead,
                     uemail: res.user.uemail,
                     token: res.token,
                   })
@@ -216,7 +216,7 @@ export default {
                   this.$store.commit('setUserInfo', {
                     uid: res.user.uid,
                     uname: res.user.uname,
-                    headImg: res.user.uhead,
+                    uhead: res.user.uhead,
                     uemail: res.user.uemail,
                     token: res.token,
                   })
