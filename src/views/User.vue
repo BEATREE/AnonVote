@@ -259,16 +259,9 @@ export default {
     logout() {
       localStorage.removeItem('currentUser')
       localStorage.removeItem('userInfo')
+      // 清除用户信息
+      this.$store.commit("clearUserInfo");
       this.$router.push('/login')
-      // 清除服务器端登录数据
-      //   this.axios.get('logout.php').then(response => {
-      //     if (response.data.status == 1) {
-      //       this.$message({
-      //         message: '已成功退出！',
-      //         type: 'info',
-      //       })
-      //     }
-      //   })
     },
   },
   watch: {

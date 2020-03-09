@@ -51,7 +51,6 @@ export default {
   methods:{
     userInit(){
       var token = this.$store.getters.getUserInfo.token;
-      console.log(token);
       this.axios.get("user/userinit", {
         headers:{
           token: token,

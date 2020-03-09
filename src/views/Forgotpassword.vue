@@ -129,7 +129,7 @@
                     v-on:click="onStep3('resetForm')"
                     :disabled="pwdsRsame"
                   >
-                    登录
+                    确定
                   </el-button>
                 </el-form-item>
               </el-form>
@@ -137,7 +137,9 @@
             <div class="step3" v-if="currentStep == 4">
               <h2>恭喜您，密码重设成功！</h2>
 
-              <el-button type="primary" @click="goto('login')">前往登录</el-button>
+              <el-button type="primary" @click="goto('login')">
+                前往登录
+              </el-button>
             </div>
           </el-card>
         </div>
@@ -160,7 +162,7 @@ export default {
       },
       // 步骤三表单数据
       resetForm: {
-        uid: '',
+        token: '',
         password: '',
         repassword: '',
         validcode: '',
@@ -203,22 +205,9 @@ export default {
       var token = this.$route.query.token
       // 1 如果带有token -> 后台核验
       if (token != null) {
-        // this.axios.post('url', { token: token }).then(response => {
-        //   // 获取服务器回应
-        //   let res = response.data
-        //   if (res.state == '1') {
-        //     // 1.1 token验证合格
-        //   } else {
-        //     // 1.2 token验证不合格
-        //   }
-        // })
-
-        // 静态开发，而后需用axios进行动态验证
-        this.resetForm.uid = 0 // 之后从api取得
-        this.currentStep = 2 // 设定当前步骤
-      } else {
+        this.currentStep = 2 // 设定当前步骤为重置密码步骤
+        this.resetForm.token = token; // 填入token
       }
-
       // 2 如果没有带有token -> 从第一步骤开始
     },
     // 验证码判断
@@ -238,19 +227,22 @@ export default {
           // 验证码判断
           if (this.checkValidCode(this.emailInfo.validcode)) {
             // 发送api请求
-            // this.axios.push("url", this.emailInfo).then( response => {
-
-            // })
-            console.log('发送api请求')
-            // if(请求成功) 进入第二步骤
-            this.currentStep = 1
-            // else 如果未成功
-            // 判断返回码
-            // 0. 未注册 1. 网络问题
-            this.$message({
-              message: '您输入的邮箱不存在，请核查后再次输入',
-              type: 'warning',
-            })
+            this.axios
+              .post('user/validate-email', this.emailInfo)
+              .then(response => {
+                var res = response.data;
+                var message = res.message; //  api接口返回的信息
+                var infoType = "warning";
+                if (res.status == 1) {
+                  //  验证成功并已发送邮件
+                  this.currentStep = 1;
+                  infoType = "success";
+                }
+                this.$message({
+                  message: message,
+                  type: infoType,
+                });
+              })
           } else {
             this.$message({
               message: '验证码有误，请重新输入',
@@ -270,19 +262,22 @@ export default {
           // 验证码判断
           if (this.checkValidCode(this.resetForm.validcode)) {
             // 发送api请求
-            // this.axios.push("url", this.emailInfo).then( response => {
-
-            // })
-            console.log('发送设置密码api请求，数据为', this.resetForm)
-            // if(请求成功) 进入第四步骤，且更新第四步骤为已完成
-            this.currentStep = 4
-            // else 如果未成功
-            // 判断返回码
-            //
-            this.$message({
-              message: '网络似乎存在错误，请稍后再试',
-              type: 'warning',
+            this.axios.post("user/resetpassword", this.resetForm).then( response => {
+              var res = response.data;
+              var message = res.message;
+              var infoType = "warning";
+              if(res.status == 1){
+                // if(请求成功) 进入第四步骤，且更新第四步骤为已完成
+                this.currentStep = 4;
+              }else{
+                this.currentStep = 0;
+              }
+              this.$message({
+              message: message,
+              type: infoType,
             })
+            })
+            
           } else {
             this.$message({
               message: '验证码有误，请重新输入',
@@ -294,9 +289,9 @@ export default {
       })
     },
     // 页面跳转
-    goto(path){
+    goto(path) {
       this.$router.push(path)
-    }
+    },
   },
   computed: {
     // 验证两次password是否一样

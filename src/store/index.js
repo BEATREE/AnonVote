@@ -5,20 +5,8 @@ Vue.use(Vuex)
 
 // 读取本地用户设置
 var initColor = JSON.parse(localStorage.getItem('primaryColor')) || "#409eff";
-var initUserInfo = JSON.parse(localStorage.getItem('userInfo')) || {
-  uid: "", // user id
-  uname: "", // 用户名称
-  uhead: "", // 用户头像
-  uemail: "",//用户邮箱
-  token: "",// 用户token
-};
-var initAdminInfo = JSON.parse(localStorage.getItem('adminInfo')) || {
-  uid: "", // user id
-  uname: "", // 用户名称
-  uhead: "", // 用户头像
-  uemail: "",//用户邮箱
-  token: "",// 用户token
-};
+var initUserInfo = JSON.parse(localStorage.getItem('userInfo')) || {};
+var initAdminInfo = JSON.parse(localStorage.getItem('adminInfo')) || {};
 // 访问认证模块
 const verification = {
   state: {
@@ -132,6 +120,14 @@ export default new Vuex.Store({
     setAdminInfo(state, adminInfo){
       state.adminInfo = adminInfo;
       localStorage.setItem('adminInfo', JSON.stringify(adminInfo));
+    },
+    // 清除用户信息
+    clearUserInfo(state){
+      state.userInfo = {}
+    },
+    // 清除管理员信息
+    clearAdminInfo(state){
+      state.adminInfo = {}
     }
   },
   actions: {

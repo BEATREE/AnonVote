@@ -208,6 +208,7 @@ export default {
                     uname: res.user.uname,
                     uhead: res.user.uhead,
                     uemail: res.user.uemail,
+                    upassword: res.user.upassword,
                     token: res.token,
                   })
                   this.$router.push('/admin')
@@ -218,6 +219,7 @@ export default {
                     uname: res.user.uname,
                     uhead: res.user.uhead,
                     uemail: res.user.uemail,
+                    upassword: res.user.upassword,
                     token: res.token,
                   })
                   this.$router.push('/user')
