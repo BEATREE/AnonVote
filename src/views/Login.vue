@@ -204,22 +204,22 @@ export default {
                   localStorage.setItem('currentAdmin', true)
                   // 管理员身份
                   this.$store.commit('setAdminInfo', {
-                    uid: res.user.uid,
-                    uname: res.user.uname,
-                    uhead: res.user.uhead,
-                    uemail: res.user.uemail,
-                    upassword: res.user.upassword,
+                    uid: res.data.uid,
+                    uname: res.data.uname,
+                    uhead: res.data.uhead,
+                    uemail: res.data.uemail,
+                    upassword: res.data.upassword,
                     token: res.token,
                   })
                   this.$router.push('/admin')
                 } else {
                   localStorage.setItem('currentUser', true)
                   this.$store.commit('setUserInfo', {
-                    uid: res.user.uid,
-                    uname: res.user.uname,
-                    uhead: res.user.uhead,
-                    uemail: res.user.uemail,
-                    upassword: res.user.upassword,
+                    uid: res.data.uid,
+                    uname: res.data.uname,
+                    uhead: res.data.uhead,
+                    uemail: res.data.uemail,
+                    upassword: res.data.upassword,
                     token: res.token,
                   })
                   this.$router.push('/user')
@@ -248,35 +248,36 @@ export default {
             .post('user/register', this.form)
             .then(response => {
               let res = response.data //用res承接返回后台的json文件(像使用数组那样)
+              let message = res.message
               console.log(res)
-              if (res.status == '1') {
+              if (res.status == 1) {
                 //显示登录结果
-                console.log('注册成功')
+                // console.log('注册成功')
                 localStorage.setItem('currentUser', true)
                 this.$message({
                   message: '恭喜您，注册成功，已自动登录',
                   type: 'success',
                 })
                 this.$store.commit('setUserInfo', {
-                  uid: res.user.uid,
-                  uname: res.user.uname,
-                  uhead: res.user.uhead,
-                  uemail: res.user.uemail,
+                  uid: res.data.uid,
+                  uname: res.data.uname,
+                  uhead: res.data.uhead,
+                  uemail: res.data.uemail,
                 })
                 this.$router.push('/admin')
-              } else if (res.status == '2') {
-                console.log('注册失败')
-                console.log(response)
+              } else if (res.status == 2) {
+                // console.log('注册失败')
+                // console.log(response)
                 // 弹出登录失败的提示框
                 this.$message({
-                  message: '当前邮箱已被注册！',
+                  message: message,
                   type: 'warning',
                 })
               } else {
-                console.log('注册失败')
-                console.log(response)
+                // console.log('注册失败')
+                // console.log(response)
                 // 弹出登录失败的提示框
-                this.$message.error('帐号注册失败！')
+                this.$message.error(message)
               }
             })
         } else {

@@ -57,8 +57,9 @@ export default {
         }
       }).then(response => {
         var res = response.data;
+        console.log(res);
         if(res.status == 1){
-          this.initInfo = res;
+          this.initInfo = res.data;
         }
       })
     }

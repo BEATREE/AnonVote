@@ -269,6 +269,7 @@ export default {
               if(res.status == 1){
                 // if(请求成功) 进入第四步骤，且更新第四步骤为已完成
                 this.currentStep = 4;
+                infoType = "success"
               }else{
                 this.currentStep = 0;
               }

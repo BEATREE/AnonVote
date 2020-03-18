@@ -7,7 +7,7 @@
           <router-link to="about" target="_blank">前往查看</router-link>
         </el-button>
       </div>
-      <p v-if="initInfo.notices != null">{{initInfo.notices[0].content}}</p>
+      <p v-if="initInfo.notices != undefined && initInfo.notices.length > 0">{{initInfo.notices[0].content}}</p>
       <p v-else>暂时没有通知</p>
     </el-card>
     <el-card class="box-card">
@@ -57,8 +57,9 @@ export default {
         }
       }).then(response => {
           var res = response.data;
+          console.log(res);
           if(res.status = 1){
-            this.initInfo = res;
+            this.initInfo = res.data;
           }
       })
     }

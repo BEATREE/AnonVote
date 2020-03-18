@@ -105,7 +105,7 @@ export default {
           message = res.message
           if (res.status == 1) {
             // 成功
-            this.userInfo = res.user
+            this.userInfo = res.data
             this.userInfo['token'] = res.token;
             this.$store.commit('setUserInfo', this.userInfo);
             typeInfo = 'success'

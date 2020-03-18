@@ -40,7 +40,15 @@
             value-format="yyyy-MM-dd HH:mm:ss"
           ></el-date-picker>
         </el-form-item>
-
+        
+        <el-form-item
+          label="每人票数"
+          :label-width="formLabelWidth"
+          prop="tnum"
+        >
+          <el-input-number v-model="addTopicForm.tnum" :min="1" label="每人票数"></el-input-number>
+        </el-form-item>
+        
         <el-form-item
           :label-width="formLabelWidth"
           label="投票详情"
@@ -70,7 +78,7 @@
             v-for="(option, index) in addTopicForm.options"
             :key="option.key"
             :label="'选项 ' + index"
-            :prop="'options.' + index + '.name'"
+            :prop="'options.' + index + '.oname'"
             :rules="{
               required: true,
               message: '选项/选手信息不能为空',
@@ -86,19 +94,19 @@
               <el-upload
                 class="avatar-uploader"
                 name="userheadpic"
-                action="http://localhost:3000/fileupload.php"
+                action="http://localhost:8088/api/upload/img"
                 :with-credentials="true"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
               >
-                <img v-if="option.pic" :src="option.pic" class="avatar" />
+                <img v-if="option.opic" :src="option.opic" class="avatar" />
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
               <br />
               <span>选项名称：</span>
               <el-input
-                v-model="option.name"
+                v-model="option.oname"
                 placeholder="选项/选手名称"
               ></el-input>
               <br />
@@ -107,7 +115,7 @@
                 type="textarea"
                 :rows="3"
                 placeholder="请输入内容"
-                v-model="option.desc"
+                v-model="option.odesc"
               ></el-input>
               <el-button
                 type="danger"
@@ -152,7 +160,7 @@
         >
           <el-form-item
             :label="'参与者 ' + index"
-            :prop="'participants.' + index + '.name'"
+            :prop="'participants.' + index + '.uname'"
             :rules="{
               required: true,
               message: '参与人信息不能为空',
@@ -167,14 +175,14 @@
 
             <span>参与者姓名：</span>
             <el-input
-              v-model="participant.name"
+              v-model="participant.uname"
               placeholder="请输入参与人名称"
             ></el-input>
 
             <!-- </el-collapse-item> -->
           </el-form-item>
           <el-form-item
-            :prop="'participants.' + index + '.email'"
+            :prop="'participants.' + index + '.uemail'"
             :rules="[
               {
                 required: true,
@@ -190,7 +198,7 @@
           >
             <span>参与者邮箱：</span>
             <el-input
-              v-model="participant.email"
+              v-model="participant.uemail"
               placeholder="请输入参与人邮箱"
             ></el-input>
 
@@ -242,19 +250,20 @@ export default {
         tname: '',
         tdeadline: '',
         tdetail: '',
+        tnum: 1,
         options: [
           {
             key: 0,
-            name: '',
-            pic: '',
-            desc: '选手描述信息',
+            oname: '',
+            opic: '',
+            odesc: '选手描述信息',
           },
         ],
         participants: [
           {
             key: 0,
-            name: '',
-            email: '',
+            uname: '',
+            uemail: '',
           },
         ],
       },
@@ -291,6 +300,7 @@ export default {
       }, // 设置时间
       rules: {
         tname: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
+        tnum: [{ required: true, message: '请设置票数', trigger: 'blur' }],
         tdeadline: [
           { required: true, message: '请设定活动截止时间', trigger: 'blur' },
         ],
@@ -347,26 +357,27 @@ export default {
       if (name == 'options') {
         var tempKey = Date.now()
         this.addTopicForm.options.push({
-          name: '',
-          pic: '',
-          desc: '',
+          oname: '',
+          opic: '',
+          odesc: '',
           key: tempKey,
         })
         this.collapseActiveNames = [tempKey]
       } else if (name == 'participants') {
         this.addTopicForm.participants.push({
-          name: '',
-          email: '',
+          uname: '',
+          uemail: '',
           key: Date.now(),
         })
       }
     },
     // 图象上传
     handleAvatarSuccess(res, file, fileList) {
-      // console.log(file);
-      // console.log(fileList);
+      console.log(res)
+      console.log(file);
+      console.log(fileList.length);
       this.imageUrl[fileList.length - 1] = URL.createObjectURL(file.raw)
-      this.addTopicForm.options[fileList.length - 1].pic = res.storepath
+      this.addTopicForm.options[fileList.length - 1].opic = res.storepath
       // console.log(res)
     },
     beforeAvatarUpload(file) {
@@ -391,9 +402,26 @@ export default {
         if (valid) {
           // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
           // this.$router.push("/main");
-          // this.axios.post('register.php', this.form).then(response => {})
+          this.axios.post('topic/publishTopic', this.addTopicForm, {
+            headers:{
+              token: this.$store.getters.getUserInfo.token,
+            }
+          }).then(response => {
+            var res = response.data;
+            var message = res.message;
+            var infoType = "warning";
+            if(res.status == 1){
+              this.$router.push("/user")
+              infoType = "success"
+            }
+
+            this.$message({
+              type: infoType,
+              message: message
+            })
+          })
         } else {
-          // this.showDialog = true;
+          this.showDialog = true;
         }
       })
     },
