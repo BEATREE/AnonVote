@@ -17,6 +17,7 @@
       :rules="rules"
       ref="addTopicForm"
       label-width="80px"
+      v-loading="loading"
     >
       <div v-if="achieveStep == 0">
         <el-form-item
@@ -314,6 +315,7 @@ export default {
       collapseActiveNames: [0],
       // collapseActiveNames2: [0],
       showDialog: false,
+      loading: false,
     }
   },
   methods: {
@@ -397,6 +399,7 @@ export default {
     },
     // 提交表单
     submitForm(formName) {
+      this.loading = true;
       // 为表单绑定验证功能
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -410,6 +413,8 @@ export default {
             var res = response.data;
             var message = res.message;
             var infoType = "warning";
+            this.loading = false;
+            
             if(res.status == 1){
               this.$router.push("/user")
               infoType = "success"
@@ -418,6 +423,12 @@ export default {
             this.$message({
               type: infoType,
               message: message
+            })
+          }).catch(error => {
+            this.loading = false;
+            this.$message({
+              type: 'error',
+              message: error
             })
           })
         } else {

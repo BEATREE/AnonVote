@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-loading="loading">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>消息通知</span>
@@ -7,7 +7,9 @@
           <router-link to="about" target="_blank">前往查看</router-link>
         </el-button>
       </div>
-      <p v-if="initInfo.notices != undefined && initInfo.notices.length > 0">{{initInfo.notices[0].content}}</p>
+      <p v-if="initInfo.notices != undefined && initInfo.notices.length > 0">
+        {{ initInfo.notices[0].content }}
+      </p>
       <p v-else>暂时没有通知</p>
     </el-card>
     <el-card class="box-card">
@@ -17,7 +19,7 @@
           <router-link to="about" target="_blank">前往查看</router-link>
         </el-button>
       </div>
-      <h1>{{initInfo.allTopicCount}}</h1>
+      <h1>{{ initInfo.allTopicCount }}</h1>
     </el-card>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
@@ -26,7 +28,7 @@
           <router-link to="about" target="_blank">前往查看</router-link>
         </el-button>
       </div>
-      <h1>{{initInfo.allTopicCount - initInfo.closedTopicCount}}</h1>
+      <h1>{{ initInfo.allTopicCount - initInfo.closedTopicCount }}</h1>
     </el-card>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
@@ -35,39 +37,57 @@
           <router-link to="about" target="_blank">前往查看</router-link>
         </el-button>
       </div>
-      <h1>{{initInfo.closedTopicCount}}</h1>
+      <h1>{{ initInfo.closedTopicCount }}</h1>
     </el-card>
   </div>
 </template>
 
 <script>
 export default {
-  name: "UserIndex",
-  data(){
+  name: 'UserIndex',
+  data() {
     return {
-      initInfo:{}
+      initInfo: {
+        allTopicCount: 0,
+        closedTopicCount: 0,
+      },
+      loading: true,
     }
   },
-  methods:{
-    userInit(){
-      var token = this.$store.getters.getUserInfo.token;
-      this.axios.get("user/userinit", {
-        headers:{
-          token: token,
-        }
-      }).then(response => {
-          var res = response.data;
-          console.log(res);
-          if(res.status = 1){
-            this.initInfo = res.data;
+  methods: {
+    userInit() {
+      var token = this.$store.getters.getUserInfo.token
+      this.axios
+        .get('user/userinit', {
+          headers: {
+            token: token,
+          },
+        })
+        .then(response => {
+          var res = response.data
+          console.log(res)
+          if ((res.status = 1)) {
+            this.initInfo = res.data
+          } else {
+            this.$message({
+              message: res.messsage,
+              type: 'warning',
+            })
           }
-      })
-    }
+        })
+        .catch(error => {
+          this.$message({
+            message: error,
+            type: 'error',
+          })
+        })
+
+      this.loading = false
+    },
   },
-  created(){
-    this.userInit();
-  }
-  
+  created() {
+    this.userInit()
+  },
 }
 </script>
 
