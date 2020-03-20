@@ -4,19 +4,19 @@
       <div slot="header" class="clearfix">
         <span>消息通知</span>
         <el-button style="float: right; padding: 3px 0" type="text">
-          <router-link to="about" target="_blank">前往查看</router-link>
+          <router-link to="message">前往查看</router-link>
         </el-button>
       </div>
       <p v-if="initInfo.notices != undefined && initInfo.notices.length > 0">
         {{ initInfo.notices[0].content }}
       </p>
-      <p v-else>暂时没有通知</p>
+      <p v-else>暂时没有新通知</p>
     </el-card>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>总投票数量</span>
         <el-button style="float: right; padding: 3px 0" type="text">
-          <router-link to="about" target="_blank">前往查看</router-link>
+          <router-link to="manage">前往查看</router-link>
         </el-button>
       </div>
       <h1>{{ initInfo.allTopicCount }}</h1>
@@ -25,7 +25,7 @@
       <div slot="header" class="clearfix">
         <span>进行中的投票</span>
         <el-button style="float: right; padding: 3px 0" type="text">
-          <router-link to="about" target="_blank">前往查看</router-link>
+          <router-link to="manage">前往查看</router-link>
         </el-button>
       </div>
       <h1>{{ initInfo.allTopicCount - initInfo.closedTopicCount }}</h1>
@@ -34,7 +34,7 @@
       <div slot="header" class="clearfix">
         <span>已结束投票</span>
         <el-button style="float: right; padding: 3px 0" type="text">
-          <router-link to="about" target="_blank">前往查看</router-link>
+          <router-link to="manage">前往查看</router-link>
         </el-button>
       </div>
       <h1>{{ initInfo.closedTopicCount }}</h1>

@@ -15,16 +15,16 @@ Vue.config.productionTip = false
 axios.defaults.baseURL = 'http://localhost:8088/api/'     // 开发环境下的api
 axios.defaults.crossDomain = true;
 axios.defaults.withCredentials = true;  //设置cross跨域 并设置访问权限 允许跨域携带cookie信息
-var userToken = store.getters.getUserInfo.token;
-var adminToken = store.getters.getAdminInfo.token;
-var token = userToken;
-// 若存在管理员token，则使用管理员token
-if (adminToken != null){
-  token = adminToken;
-}
-axios.defaults.headers = {
-  "token": token
-}
+// var userToken = store.getters.getUserInfo.token;
+// var adminToken = store.getters.getAdminInfo.token;
+// var token = userToken;
+// // 若存在管理员token，则使用管理员token
+// if (adminToken != null){
+//   token = adminToken;
+// }
+// axios.defaults.headers = {
+//   "token": token
+// }
 Vue.prototype.axios = axios;
 
 // 无限滚动组件

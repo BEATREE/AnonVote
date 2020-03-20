@@ -57,12 +57,11 @@
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">
             编辑
           </el-button>
-          <el-popconfirm title="确定删除吗？(该操作不可撤回)" @onConfirm="handleDelete(scope.$index, scope.row)">
-            <el-button
-              size="mini"
-              type="danger"
-              slot="reference"
-            >
+          <el-popconfirm
+            title="确定删除吗？(该操作不可撤回)"
+            @onConfirm="handleDelete(scope.$index, scope.row)"
+          >
+            <el-button size="mini" type="danger" slot="reference">
               删除
             </el-button>
           </el-popconfirm>
@@ -73,7 +72,6 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      hide-on-single-page
       :current-page="currentPage"
       :page-sizes="[5, 10, 20]"
       :page-size="pagesize"
@@ -103,12 +101,12 @@ export default {
     getMyTopics() {
       // 显示加载状态
       this.loading = true
-      var token = this.$store.getters.getUserInfo.token
+      
       this.axios
         .get('topic/myTopics/' + this.currentPage + '/' + this.pagesize, {
-          headers: {
-            token: token,
-          },
+          headers:{
+            token: this.$store.getters.getUserInfo.token
+          }
         })
         .then(response => {
           var res = response.data
@@ -118,8 +116,12 @@ export default {
             this.total = res.total
             this.currentPage = res.current
           }
+
+          this.loading = false;
         })
-      this.loading = false
+        .catch(error => {
+          this.loading = false;
+        })
     },
     // 懒加载
     // load() {
@@ -160,13 +162,18 @@ export default {
     handleDelete(index, row) {
       console.log(index, ':', row)
       // index 为列表序号，row 为对象，可通过 row.tid 来获取投票id
-      this.axios.delete('topic/delete/' + row.tid).then(response => {
+      this.axios.delete('topic/delete/' + row.tid, {
+          headers:{
+            token: this.$store.getters.getUserInfo.token
+          }
+        }).then(response => {
         var res = response.data
         var infoType = 'error'
         if (res.status == 1) {
           // 操作成功
           this.tableData.splice(index, 1) // 列表中删除
-          this.total -= 1;
+          this.total -= 1
+          this.pagesize -= 1
           infoType = 'success'
         }
         this.$message({

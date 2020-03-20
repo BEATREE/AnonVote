@@ -7,7 +7,7 @@
       </li>
       <li>
         <b>来源：</b>
-        {{ message.from }}
+        {{ message.fromUserName }}
       </li>
       <li>
         <b>时间：</b>
