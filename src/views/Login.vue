@@ -189,49 +189,47 @@ export default {
         if (valid) {
           // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
           // this.$router.push("/main");
-          this.axios
-            .post('user/login', this.form)
-            .then(response => {
-              let res = response.data //用res承接返回后台的json文件(像使用数组那样)
-              if (res.status == 1) {
-                //显示登录结果
-                console.log('登录成功')
-                this.$message({
-                  message: 'Bingo, 登录成功！',
-                  type: 'success',
+          this.axios.post('user/login', this.form).then(response => {
+            let res = response.data //用res承接返回后台的json文件(像使用数组那样)
+            if (res.status == 1) {
+              //显示登录结果
+              console.log('登录成功')
+              this.$message({
+                message: 'Bingo, 登录成功！',
+                type: 'success',
+              })
+              if (res.flag == 1) {
+                localStorage.setItem('currentAdmin', true)
+                // 管理员身份
+                this.$store.commit('setAdminInfo', {
+                  uid: res.data.uid,
+                  uname: res.data.uname,
+                  uhead: res.data.uhead,
+                  uemail: res.data.uemail,
+                  upassword: res.data.upassword,
+                  token: res.token,
                 })
-                if (res.flag == 1) {
-                  localStorage.setItem('currentAdmin', true)
-                  // 管理员身份
-                  this.$store.commit('setAdminInfo', {
-                    uid: res.data.uid,
-                    uname: res.data.uname,
-                    uhead: res.data.uhead,
-                    uemail: res.data.uemail,
-                    upassword: res.data.upassword,
-                    token: res.token,
-                  })
-                  this.$router.push('/admin')
-                } else {
-                  localStorage.setItem('currentUser', true)
-                  this.$store.commit('setUserInfo', {
-                    uid: res.data.uid,
-                    uname: res.data.uname,
-                    uhead: res.data.uhead,
-                    uemail: res.data.uemail,
-                    upassword: res.data.upassword,
-                    token: res.token,
-                  })
-                  this.$router.push('/user')
-                }
+                this.$router.push('/admin')
               } else {
-                console.log('登录失败')
-                console.log(response)
-                var returnMsg = res.message
-                // 弹出登录失败的提示
-                this.$message.error(returnMsg)
+                localStorage.setItem('currentUser', true)
+                this.$store.commit('setUserInfo', {
+                  uid: res.data.uid,
+                  uname: res.data.uname,
+                  uhead: res.data.uhead,
+                  uemail: res.data.uemail,
+                  upassword: res.data.upassword,
+                  token: res.token,
+                })
+                this.$router.push('/user')
               }
-            })
+            } else {
+              console.log('登录失败')
+              console.log(response)
+              var returnMsg = res.message
+              // 弹出登录失败的提示
+              this.$message.error(returnMsg)
+            }
+          })
         } else {
           this.dialogVisible = true
           return false

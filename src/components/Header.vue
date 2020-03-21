@@ -28,13 +28,8 @@
       <el-menu-item index="about" class="hidden-xs-only">
         关于系统
       </el-menu-item>
-      <!-- <el-menu-item  v-if="!loggged">
-        <el-button type="text" @click="dialogLoginVisible = true">登录</el-button>
-      </el-menu-item>
-       <el-menu-item  v-else index="user">
-        个人中心
-      </el-menu-item> -->
-      <el-menu-item class="nav-algolia-right" v-if="!loggged">
+
+      <el-menu-item class="nav-algolia-right" v-if="logged == ''">
         <!-- <el-autocomplete
           class="inline-input"
           v-model="keyword"
@@ -45,6 +40,12 @@
         ></el-autocomplete> -->
         <el-button type="primary" round @click="goTo('login')">登录</el-button>
         <el-button round @click="goTo('register')">注册</el-button>
+      </el-menu-item>
+      <el-menu-item  v-else-if="logged == 'user'" index="user">
+        <span style="color: #0a93f3">个人中心</span>
+      </el-menu-item>
+      <el-menu-item  v-else index="admin">
+        <span style="color: #0a93f3">个人中心</span>
       </el-menu-item>
 
       <!-- <el-submenu index="2">
@@ -116,23 +117,13 @@ export default {
   data() {
     return {
       navlogo: require('@/assets/img/anonvotelogo.svg'),
-      keyword: '',
-      // restaurants: [],
       activeIndex: '/',
-      loggged: false, // 判断用户是否登录
+      logged: false, // 判断用户是否登录
       drawer: false,
     }
   },
 
   methods: {
-    querySearch(queryString, cb) {
-      // var restaurants = this.restaurants
-      // var results = queryString
-      //   ? restaurants.filter(this.createFilter(queryString))
-      //   : restaurants
-      // // 调用 callback 返回建议列表的数据
-      // cb(results)
-    },
     goTo(word){
       if(word == 'login'){
         this.$router.push('/login');
@@ -153,48 +144,22 @@ export default {
         )
       }
     },
-    loadAll() {
-      return [
-        { value: '三全鲜食（北新泾店）', address: '长宁区新渔路144号' },
-        {
-          value: 'Hot honey 首尔炸鸡（仙霞路）',
-          address: '上海市长宁区淞虹路661号',
-        },
-        {
-          value: '新旺角茶餐厅',
-          address: '上海市普陀区真北路988号创邑金沙谷6号楼113',
-        },
-        { value: '泷千家(天山西路店)', address: '天山西路438号' },
-        {
-          value: '胖仙女纸杯蛋糕（上海凌空店）',
-          address: '上海市长宁区金钟路968号1幢18号楼一层商铺18-101',
-        },
-        { value: '贡茶', address: '上海市长宁区金钟路633号' },
-        {
-          value: '豪大大香鸡排超级奶爸',
-          address: '上海市嘉定区曹安公路曹安路1685号',
-        },
-        {
-          value: '茶芝兰（奶茶，手抓饼）',
-          address: '上海市普陀区同普路1435号',
-        },
-        { value: '十二泷町', address: '上海市北翟路1444弄81号B幢-107' },
-        { value: '星移浓缩咖啡', address: '上海市嘉定区新郁路817号' },
-        { value: '阿姨奶茶/豪大大', address: '嘉定区曹安路1611号' },
-        { value: '新麦甜四季甜品炸鸡', address: '嘉定区曹安公路2383弄55号' },
-        {
-          value: 'Monica摩托主题咖啡店',
-          address: '嘉定区江桥镇曹安公路2409号1F，2383弄62号1F',
-        },
-      ]
-    },
     handleSelect() {},
     dialogLoginVisible() {
       // 显示登录框
     },
+    checkLogin(){
+      var userToken = this.$store.getters.getUserInfo.token;
+      var adminToken = this.$store.getters.getAdminInfo.token;
+      if(userToken != null){
+        this.logged = 'user'
+      }else if(adminToken != null){
+        this.logged = 'admin'
+      }
+    }
   },
   mounted() {
-    this.restaurants = this.loadAll();
+    this.checkLogin();
     this.activeIndex = this.$route.path.substring(1);// 初始化导航栏激活页面
   },
 }
