@@ -157,7 +157,29 @@ export default {
       console.log(`handleCurrentChange: 当前页 ${val} `)
     },
     handleEdit(index, row) {
-      console.log(index, row)
+      this.axios.get("topic/getTopic/" + row.tid, {
+        headers:{
+          token: this.$store.getters.getUserInfo.token
+        }
+      }).then( response => {
+        var res = response.data;
+        if(res.status == 1){
+          // 获取成功
+          // 页面带参跳转
+          this.$router.push({
+            name: 'Reedit',
+            params:{
+              topicData: res.data
+            }
+          })
+        }else{
+          this.$message({
+            type: "warning",
+            message: res.message
+          })
+        }
+      })
+      
     },
     handleDelete(index, row) {
       console.log(index, ':', row)

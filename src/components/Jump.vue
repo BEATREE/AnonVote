@@ -44,25 +44,52 @@ export default {
       })
 
       this.axios
-        .post('', { 参数: '参数' })
+        .get('tlink/checkCode/' + this.verificationCode)
         .then(response => {
-          // 请求成功
-          console.log('123')
           //加载完成后关闭加载框
           loadingInstance.close()
-          // 成功则跳转
-          this.$router.push({
-            name: 'Vote',
-            // params:{ // 在本页面获取对应投票信息
-            //     id: this.topicId
-            // }
-          })
+          var res = response.data
+          var topicData = res.data;
+          // 请求成功
+          if (res.status == 1) {
+            // 包含有 topic， options
+            // 未参与投票
+            var topicData = res.data
+            this.$store.commit("setVerifiedStatus", true);
+            this.$store.commit("setEffectiveStatus", true);
+            // 成功则跳转
+            this.$router.push({
+              name: 'Vote',
+              params:{ // 在本页面获取对应投票信息
+                  topicData: topicData,
+                  canvote: true   // 是否可以投票
+              }
+            })
+          } else if (res.status == 2) {
+            // 已参与过投票，只能查看，无法操作
+            var topicData = res.data
+            this.$store.commit("setVerifiedStatus", true);
+            this.$store.commit("setEffectiveStatus", false);
+            // 成功则跳转
+            this.$router.push({
+              name: 'Vote',
+              params:{ // 在本页面获取对应投票信息
+                  topicData: topicData,
+                  canvote: false,   // 是否可以投票
+              }
+            })
+
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.message,
+            })
+          }
         })
         .catch(() => {
           var that = this
           // 请求失败
           loadingInstance.close()
-
           that.$message({
             message: '当前网络状况似乎存在问题',
             type: 'warning',

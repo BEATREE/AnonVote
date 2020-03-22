@@ -1,5 +1,5 @@
 <template>
-  <el-container v-loading="loading">
+  <el-container v-loading="loading" class="container">
     <ul v-if="messages.length > 0">
       <li v-for="(message, index) in messages" :key="message.nid">
         <el-tag>{{ message.fromUserName }}</el-tag>
@@ -11,7 +11,7 @@
           </div>
           <span class="time">{{ message.time }}</span>
         </div>
-        <div style="margin-left: auto;margin-right: 66px">
+        <div class="delButton" style="margin-left: auto;margin-right: 66px">
           <el-button
               @click="delMessage(index)"
               type="danger"
@@ -28,7 +28,6 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      hide-on-single-page
       :current-page="currentPage"
       :page-sizes="[5, 10, 20]"
       :page-size="pagesize"
@@ -162,8 +161,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media screen and (max-width: 760px){
+  ul {
+    width: 98%;
+    overflow: hidden;
+    padding: 0;
+  }
+  div.delButton{
+    margin-right: 0px !important;
+  }
+}
+.container{
+  display: flex;
+  flex-direction: column;
+}
 ul {
-  width: 90%;
+  width: 100%;
+  padding-left: 0px;
 }
 li {
   display: flex;
