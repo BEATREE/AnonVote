@@ -45,7 +45,7 @@
 
         <el-drawer
           class="hidden-md-and-up"
-          title="AnonVote用户后台"
+          title="AnonVote管理员后台"
           :visible.sync="drawer"
           direction="ltr"
           :router="true"
@@ -62,24 +62,28 @@
             router
             style="width: auto;"
           >
-            <el-menu-item index="/user/index" @click="drawer = false">
+            <el-menu-item index="index" @click="drawer = false">
               <i class="el-icon-s-home"></i>
               <span slot="title">后台首页</span>
             </el-menu-item>
-            <el-menu-item index="/user/add" @click="drawer = false">
+            <el-menu-item index="addmessage" @click="drawer = false">
               <i class="el-icon-circle-plus"></i>
-              <span slot="title">创建投票</span>
+              <span slot="title">发布通知</span>
             </el-menu-item>
-            <el-menu-item index="/user/manage" @click="drawer = false">
+            <el-menu-item index="users" @click="drawer = false">
               <i class="el-icon-s-management"></i>
-              <span slot="title">管理投票</span>
+              <span slot="title">用户管理</span>
             </el-menu-item>
 
-            <el-menu-item index="/user/message" @click="drawer = false">
+            <el-menu-item index="topics" @click="drawer = false">
               <i class="el-icon-message-solid"></i>
-              <span slot="title">消息通知</span>
+              <span slot="title">投票管理</span>
             </el-menu-item>
-            <el-menu-item index="/user/profile" @click="drawer = false">
+            <el-menu-item index="messages" @click="drawer = false">
+              <i class="el-icon-message-solid"></i>
+              <span slot="title">通知管理</span>
+            </el-menu-item>
+            <el-menu-item index="profile" @click="drawer = false">
               <i class="el-icon-user-solid"></i>
               <span slot="title">个人资料</span>
             </el-menu-item>
@@ -190,7 +194,7 @@
 
 <script>
 export default {
-  name: 'User',
+  name: 'Admin',
   data() {
     return {
       logosrc: require('@/assets/img/cover.png'),

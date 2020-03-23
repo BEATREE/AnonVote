@@ -58,7 +58,7 @@
       </el-card>
     </div>
     <div class="submit">
-      <el-button type="primary" @click="confirmDialogVisible = true">
+      <el-button type="primary" @click="confirmDialogVisible = true" :disabled="!effective">
         点击提交
       </el-button>
       <el-dialog
@@ -73,7 +73,7 @@
         <p>是否确定提交您的选票？</p>
         <span slot="footer" class="dialog-footer">
           <el-button @click="confirmDialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="confirmSubmit">
+          <el-button type="primary" @click="confirmSubmit"  :disabled="!effective">
             确 定
           </el-button>
         </span>
@@ -101,14 +101,21 @@ export default {
     },
     confirmSubmit() {
       // 发送数据到服务器
+      
       // 提示客户端成功信息
       this.$message({
         message: '您已提交选票',
         type: 'success',
       })
       // 设置为不可投票状态
-      this.effective = false
+      // 隐藏弹框
+      this.confirmDialogVisible = false;
+      this.effective = false;
       // 显示票数
+
+      // 修改store信息
+      this.$store.commit("setVerifiedStatus", false)
+      this.$store.commit("setEffectiveStatus", false)
     },
     checkEffective() {
       // 进行身份合法性核查

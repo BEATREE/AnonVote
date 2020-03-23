@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h1>管理投票页面</h1>
+    <h1>用户管理</h1>
     <el-table
       :data="
         tableData.filter(
           data =>
-            !search || data.name.toLowerCase().includes(search.toLowerCase()),
+            !search || data.tname.toLowerCase().includes(search.toLowerCase()),
         )
       "
       class="scrollTable"
@@ -16,28 +16,22 @@
       v-infinite-scroll="load"
       infinite-scroll-disabled="busy"
       infinite-scroll-distance="10" -->
-      <el-table-column label="投票主题名称" prop="name" width="180">
+      <el-table-column label="id" prop="uid" width="80" sortable>
+      </el-table-column>
+
+       <el-table-column label="用户名称" prop="uname" width="180" sortable>
+      </el-table-column>
+
+      <el-table-column label="用户邮箱" prop="uemail" width="200">
+      </el-table-column>
+
+      <el-table-column label="当前状态" width="200">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.name }}</el-tag>
+            <el-tag size="medium" type="success" v-if="scope.row.ustatus==1">正常</el-tag>
+            <el-tag size="medium" type="warning" v-else-if="scope.row.ustatus==0">冻结</el-tag>
+            <el-tag size="medium" type="danger" v-else>已删除</el-tag>
           </div>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="投票主题简介" width="500">
-        <template slot-scope="scope">
-          <div class="detailInTable">
-            {{ scope.row.detail }}
-          </div>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="截止日期" width="220">
-        <template slot-scope="scope">
-          <i class="el-icon-time" style="margin-left: 10px"></i>
-          <span style="margin-left: 10px">
-            {{ scope.row.tdeadline | dateFormat }}
-          </span>
         </template>
       </el-table-column>
 
@@ -53,16 +47,22 @@
           />
         </template>
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">
-            编辑
+          <el-button size="mini" @click="handleToNormal(scope.$index, scope.row)" type="success">
+            恢复正常
           </el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
+          <el-button size="mini" @click="handleFreeze(scope.$index, scope.row)" type="warning">
+            冻结账户
+          </el-button>
+
+          <el-popconfirm
+            title="确定删除吗？"
+            @onConfirm="handleDelete(scope.$index, scope.row)"
+            style="margin-left: 6px;"
           >
-            删除
-          </el-button>
+            <el-button size="mini" type="danger" slot="reference">
+              删除账户
+            </el-button>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -70,12 +70,11 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      hide-on-single-page
-      :current-page="currentPage4"
-      :page-sizes="[50, 100, 200]"
-      :page-size="100"
+      :current-page="currentPage"
+      :page-sizes="[10, 30, 50, -1]"
+      :page-size="pagesize"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="400"
+      :total="total"
       style="margin-top: 12px;"
     ></el-pagination>
   </div>
@@ -83,51 +82,49 @@
 
 <script>
 export default {
-  name: 'Manage',
+  name: 'AdminTopics',
   data() {
     return {
-      tableData: [
-        {
-          id: 1,
-          deadline: '2016-05-02',
-          name: '李小虎李小虎李小虎李小虎李小虎李小虎李小虎李小虎李小虎',
-          detail:
-            '很多愿望，我想要的，上苍都给了我，很快或者很慢地，我都一一地接到了。而我对青春的美的渴望，虽然好象一直没有得到，可是走着走着，回过头一看，好象又都已经过去了。有几次，当时并没能马上感觉到，可是，也很有几次，我心里猛然醒悟：原来，这就是青春！ 很多愿望，我想要的，上苍都给了我，很快或者很慢地，我都一一地接到了。而我对青春的美的渴望，虽然好象一直没有得到，可是走着走着，回过头一看，好象又都已经过去了。有几次，当时并没能马上感觉到，可是，也很有几次，我心里猛然醒悟：原来，这就是青春！ ',
-        },
-        {
-          id: 2,
-          deadline: '2016-05-04',
-          name: '王小虎',
-          detail:
-            '很多愿望，我想要的，上苍都给了我，很快或者很慢地，我都一一地接到了。而我对青春的美的渴望，虽然好象一直没有得到，可是走着走着，回过头一看，好象又都已经过去了。有几次，当时并没能马上感觉到，可是，也很有几次，我心里猛然醒悟：原来，这就是青春！ ',
-        },
-        {
-          id: 3,
-          deadline: '2016-05-01',
-          name: '王小虎',
-          detail:
-            '很多愿望，我想要的，上苍都给了我，很快或者很慢地，我都一一地接到了。而我对青春的美的渴望，虽然好象一直没有得到，可是走着走着，回过头一看，好象又都已经过去了。有几次，当时并没能马上感觉到，可是，也很有几次，我心里猛然醒悟：原来，这就是青春！ ',
-        },
-        {
-          id: 4,
-          deadline: '2016-05-03',
-          name: '王小虎',
-          detail:
-            '很多愿望，我想要的，上苍都给了我，很快或者很慢地，我都一一地接到了。而我对青春的美的渴望，虽然好象一直没有得到，可是走着走着，回过头一看，好象又都已经过去了。有几次，当时并没能马上感觉到，可是，也很有几次，我心里猛然醒悟：原来，这就是青春！ ',
-        },
-      ],
+      tableData: [],
       search: '',
       loading: true,
-      currentPage4: 4,
+      currentPage: 1,
+      pagesize: 10,
+      total: 0,
       // busy: false,
     }
   },
   methods: {
     // 获取用户个人创建的投票主题
-    getMyTopics() {
-      setTimeout(() => {
-        this.loading = false
-      }, 500)
+    getAllUsers() {
+      // 显示加载状态
+      this.loading = true
+      
+      this.axios
+        .get('user/allUsers/' + this.currentPage + '/' + this.pagesize, {
+          headers:{
+            token: this.$store.getters.getAdminInfo.token
+          }
+        })
+        .then(response => {
+          var res = response.data
+          if (res.status == 1) {
+            // 填充远程数据
+            this.tableData = res.data
+            this.total = res.total
+            this.currentPage = res.current
+          }else{
+            this.$message({
+              type: 'warning',
+              message: res.message
+            })
+          }
+
+          this.loading = false;
+        })
+        .catch(error => {
+          this.loading = false;
+        })
     },
     // 懒加载
     // load() {
@@ -151,14 +148,102 @@ export default {
       this.$refs['scrollTable'].$el.style.height = pageHeight - 183 + 'px'
     },
     handleSizeChange(val) {
+      // 更新pagesize
+      this.pagesize = val
+      this.getAllUsers()
       console.log(`handleSizeChange: 每页 ${val} 条`)
     },
     handleCurrentChange(val) {
+      // 更新当前页面
+      this.currentPage = val
+      this.getAllUsers()
       console.log(`handleCurrentChange: 当前页 ${val} `)
+    },
+    handleEdit(index, row) {
+      this.axios.get("topic/getTopic/" + row.tid, {
+        headers:{
+          token: this.$store.getters.getAdminInfo.token
+        }
+      }).then( response => {
+        var res = response.data;
+        if(res.status == 1){
+          // 获取成功
+          // 页面带参跳转
+          this.$router.push({
+            name: 'Reedit',
+            params:{
+              topicData: res.data
+            }
+          })
+        }else{
+          this.$message({
+            type: "warning",
+            message: res.message
+          })
+        }
+      })
+      
+    },
+    handleToNormal(index, row){
+       // index 为列表序号，row 为对象，可通过 row.tid 来获取投票id
+      this.axios.put('user/updateUserStatus/' + row.uid +"/1",{}, {
+          headers:{
+            token: this.$store.getters.getAdminInfo.token
+          }
+        }).then(response => {
+        var res = response.data
+        var infoType = 'error'
+        if (res.status == 1) {
+          this.getAllUsers();
+          infoType = 'success';
+        }
+        this.$message({
+          message: res.message,
+          type: infoType,
+        })
+      })
+    },
+    handleFreeze(index, row){
+       // index 为列表序号，row 为对象，可通过 row.tid 来获取投票id
+      this.axios.put('user/updateUserStatus/' + row.uid +"/0",{}, {
+          headers:{
+            token: this.$store.getters.getAdminInfo.token
+          }
+        }).then(response => {
+        var res = response.data
+        var infoType = 'error'
+        if (res.status == 1) {
+          this.getAllUsers();
+          infoType = 'success';
+        }
+        this.$message({
+          message: res.message,
+          type: infoType,
+        })
+      })
+    },
+    handleDelete(index, row) {
+      // index 为列表序号，row 为对象，可通过 row.tid 来获取投票id
+      this.axios.put('user/updateUserStatus/' + row.uid +"/2",{}, {
+          headers:{
+            token: this.$store.getters.getAdminInfo.token
+          }
+        }).then(response => {
+        var res = response.data
+        var infoType = 'error'
+        if (res.status == 1) {
+          this.getAllUsers();
+          infoType = 'success';
+        }
+        this.$message({
+          message: res.message,
+          type: infoType,
+        })
+      })
     },
   },
   created() {
-    this.getMyTopics()
+    this.getAllUsers()
   },
   mounted() {
     // this.setTableHight()

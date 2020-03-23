@@ -7,8 +7,8 @@
           <router-link to="message">前往查看</router-link>
         </el-button>
       </div>
-      <p v-if="initInfo.notices != undefined && initInfo.notices.length > 0">
-        {{ initInfo.notices[0].content }}
+      <p v-if="initInfo.notices != undefined && initInfo.notices.length > 0" v-html="initInfo.notices[0].content">
+        
       </p>
       <p v-else>暂时没有新通知</p>
     </el-card>

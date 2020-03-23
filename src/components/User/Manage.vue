@@ -10,21 +10,32 @@
       "
       class="scrollTable"
       ref="scrollTable"
+      :default-sort = "{prop: 'tdeadline', order: 'descending'}"
       v-loading="loading"
     >
       <!-- 
       v-infinite-scroll="load"
       infinite-scroll-disabled="busy"
       infinite-scroll-distance="10" -->
-      <el-table-column label="投票主题名称" prop="name" width="180">
+      <el-table-column label="投票主题名称" prop="tname" width="180" sortable>
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.tname }}</el-tag>
+            <el-tag
+              size="medium"
+              v-if="
+                new Date(scope.row.tdeadline).getTime() > new Date().getTime()
+              "
+            >
+              {{ scope.row.tname }}
+            </el-tag>
+            <el-tag size="medium" type="danger" v-else>
+              {{ scope.row.tname }}·已结束
+            </el-tag>
           </div>
         </template>
       </el-table-column>
 
-      <el-table-column label="投票主题简介" width="500">
+      <el-table-column label="投票主题简介" width="500" prop="detail">
         <template slot-scope="scope">
           <div
             class="detailInTable"
@@ -33,7 +44,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="截止日期" width="220">
+      <el-table-column label="截止日期" width="220" prop="tdeadline" sortable>
         <template slot-scope="scope">
           <i class="el-icon-time" style="margin-left: 10px"></i>
           <span style="margin-left: 10px">
@@ -101,12 +112,12 @@ export default {
     getMyTopics() {
       // 显示加载状态
       this.loading = true
-      
+
       this.axios
         .get('topic/myTopics/' + this.currentPage + '/' + this.pagesize, {
-          headers:{
-            token: this.$store.getters.getUserInfo.token
-          }
+          headers: {
+            token: this.$store.getters.getUserInfo.token,
+          },
         })
         .then(response => {
           var res = response.data
@@ -115,12 +126,17 @@ export default {
             this.tableData = res.data
             this.total = res.total
             this.currentPage = res.current
+          } else {
+            this.$message({
+              type: 'warning',
+              message: res.message,
+            })
           }
 
-          this.loading = false;
+          this.loading = false
         })
         .catch(error => {
-          this.loading = false;
+          this.loading = false
         })
     },
     // 懒加载
@@ -157,52 +173,55 @@ export default {
       console.log(`handleCurrentChange: 当前页 ${val} `)
     },
     handleEdit(index, row) {
-      this.axios.get("topic/getTopic/" + row.tid, {
-        headers:{
-          token: this.$store.getters.getUserInfo.token
-        }
-      }).then( response => {
-        var res = response.data;
-        if(res.status == 1){
-          // 获取成功
-          // 页面带参跳转
-          this.$router.push({
-            name: 'Reedit',
-            params:{
-              topicData: res.data
-            }
-          })
-        }else{
-          this.$message({
-            type: "warning",
-            message: res.message
-          })
-        }
-      })
-      
+      this.axios
+        .get('topic/getTopic/' + row.tid, {
+          headers: {
+            token: this.$store.getters.getUserInfo.token,
+          },
+        })
+        .then(response => {
+          var res = response.data
+          if (res.status == 1) {
+            // 获取成功
+            // 页面带参跳转
+            this.$router.push({
+              name: 'Reedit',
+              params: {
+                topicData: res.data,
+              },
+            })
+          } else {
+            this.$message({
+              type: 'warning',
+              message: res.message,
+            })
+          }
+        })
     },
     handleDelete(index, row) {
       console.log(index, ':', row)
       // index 为列表序号，row 为对象，可通过 row.tid 来获取投票id
-      this.axios.delete('topic/delete/' + row.tid, {
-          headers:{
-            token: this.$store.getters.getUserInfo.token
-          }
-        }).then(response => {
-        var res = response.data
-        var infoType = 'error'
-        if (res.status == 1) {
-          // 操作成功
-          this.tableData.splice(index, 1) // 列表中删除
-          this.total -= 1
-          this.pagesize -= 1
-          infoType = 'success'
-        }
-        this.$message({
-          message: res.message,
-          type: infoType,
+      this.axios
+        .delete('topic/delete/' + row.tid, {
+          headers: {
+            token: this.$store.getters.getUserInfo.token,
+          },
         })
-      })
+        .then(response => {
+          var res = response.data
+          var infoType = 'error'
+          if (res.status == 1) {
+            // 操作成功
+            this.tableData.splice(index, 1) // 列表中删除
+            this.total -= 1
+            this.pagesize -= 1
+            infoType = 'success'
+          }
+          this.$message({
+            message: res.message,
+            type: infoType,
+          })
+        })
     },
   },
   created() {

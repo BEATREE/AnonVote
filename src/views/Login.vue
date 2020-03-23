@@ -94,8 +94,23 @@
                 show-password
               />
             </el-form-item>
+
+            <el-form-item label="密码" prop="upassword">
+              <el-input
+                type="upassword"
+                placeholder="请输入密码"
+                v-model="form.repassword"
+                show-password
+              />
+                <div v-if="pwdsRsame" class="el-form-item__error">
+                    两次密码不一致
+                </div>
+            </el-form-item>
+
+
+
             <el-form-item>
-              <el-button type="primary" v-on:click="onRegister('registerForm')">
+              <el-button type="primary" v-on:click="onRegister('registerForm')" :disabled="pwdsRsame">
                 注册
               </el-button>
             </el-form-item>
@@ -123,10 +138,10 @@ export default {
       form: {
         uname: '',
         upassword: '',
+        repassword:'',  // 用户核查
         uemail: '',
         uhead: '',
       },
-
       // 表单验证，需要在 el-form-item 元素中增加 prop 属性
       rules: {
         uname: [{ required: true, message: '账号不可为空', trigger: 'blur' }],
@@ -168,6 +183,15 @@ export default {
     if (this.$route.params.activename) {
       this.activeName = this.$route.params.activename
     }
+  },
+  computed: {
+    // 验证两次password是否一样
+    pwdsRsame() {
+      return (
+        this.form.upassword != this.form.repassword &&
+        this.form.repassword != ''
+      )
+    },
   },
   methods: {
     checkLoginStatus() {

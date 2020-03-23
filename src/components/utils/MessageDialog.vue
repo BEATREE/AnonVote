@@ -15,7 +15,7 @@
       </li>
       <li>
         <b>内容：</b>
-        {{ message.content }}
+        <p v-html="message.content"></p>
       </li>
     </ul>
   </div>

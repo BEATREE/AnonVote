@@ -96,7 +96,7 @@ export default {
       this.messages[index].haveRead = 1
       //   异步修改服务器端数据
       this.axios
-        .put('notice/readNotice/' + currentMessage.nid, {},{
+        .get('notice/readNotice/' + currentMessage.nid, {
           headers:{
             token: this.$store.getters.getUserInfo.token
           }
