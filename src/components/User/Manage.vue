@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>管理投票页面</h1>
+    <h1>管理投票</h1>
     <el-table
       :data="
         tableData.filter(
@@ -65,12 +65,16 @@
           />
         </template>
         <template slot-scope="scope">
+          <el-button size="mini" @click="handlePreview(scope.$index, scope.row)" type="success">
+            查看
+          </el-button>
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">
             编辑
           </el-button>
           <el-popconfirm
             title="确定删除吗？(该操作不可撤回)"
             @onConfirm="handleDelete(scope.$index, scope.row)"
+            style="margin-left:5px;"
           >
             <el-button size="mini" type="danger" slot="reference">
               删除
@@ -84,7 +88,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
-      :page-sizes="[5, 10, 20]"
+      :page-sizes="[10, 15, 20, -1]"
       :page-size="pagesize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total"
@@ -102,7 +106,7 @@ export default {
       search: '',
       loading: true,
       currentPage: 1,
-      pagesize: 5,
+      pagesize: 10,
       total: 0,
       // busy: false,
     }
@@ -171,6 +175,33 @@ export default {
       this.currentPage = val
       this.getMyTopics()
       console.log(`handleCurrentChange: 当前页 ${val} `)
+    },
+    handlePreview(index, row) {
+      this.axios
+        .get('topic/getTopic/' + row.tid, {
+          headers: {
+            token: this.$store.getters.getUserInfo.token,
+          },
+        })
+        .then(response => {
+          var res = response.data
+          if (res.status == 1) {
+            // 获取成功
+            // 显示内容
+            this.$alert(res.data.tdetail, res.data.tname, {
+              confirmButtonText: '确定',
+              dangerouslyUseHTMLString: true,
+              callback: action => {
+                
+              },
+            })
+          } else {
+            this.$message({
+              type: 'warning',
+              message: res.message,
+            })
+          }
+        })
     },
     handleEdit(index, row) {
       this.axios

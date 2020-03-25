@@ -1,6 +1,10 @@
 {
   "name": "anonvote-cli",
-  "version": "0.1.0",
+  "version": "1.1.0",
+  "author": "肖尊严",
+  "description": "基于Paillier同态加密算法的匿名投票系统。",
+  "copyright": "Copyright © 2020 肖尊严",
+  "main": "./dist/electron/electron.js",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -11,6 +15,8 @@
     "axios": "^0.19.2",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.4",
+    "electron": "^8.1.1",
+    "electron-builder": "^22.4.1",
     "element-ui": "^2.13.0",
     "moment": "^2.24.0",
     "node-sass": "^4.13.1",

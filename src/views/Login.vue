@@ -95,10 +95,10 @@
               />
             </el-form-item>
 
-            <el-form-item label="密码" prop="upassword">
+            <el-form-item label="确认密码" prop="upassword">
               <el-input
                 type="upassword"
-                placeholder="请输入密码"
+                placeholder="请重新输入密码"
                 v-model="form.repassword"
                 show-password
               />

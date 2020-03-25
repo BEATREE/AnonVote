@@ -46,15 +46,16 @@
         <!-- 选项名称 -->
         <h2>{{ option.oname }}</h2>
         <span class="desc">{{ option.odesc }}</span>
-        <el-checkbox
-          v-model="result[index]"
+        <!-- <el-checkbox
+          v-model="voterecords.selections[index]"
           :true-label="1"
           :false-label="0"
-          :disabled="!effective"
+          :disabled="!effective || useout <= 0"
           border
         >
           我要选TA
-        </el-checkbox>
+        </el-checkbox> -->
+        <el-input-number v-model="voterecords.selections[index]" @change="selctionChanged" :min="0" :max="useout + 1" label="选TA" :disabled="!effective"></el-input-number>
       </el-card>
     </div>
     <div class="submit">
@@ -89,7 +90,11 @@ export default {
     return {
       topic: {},
       options: [],
-      result: [],
+      voterecords:{   
+        tlid: "",
+        selections: [],
+      },
+      useout: 0,  // 用于判断是否还有票数
       confirmDialogVisible: false,
       verified: false, // 判断是否由认证码
       effective: false, // 判断认证码是否有效， 若有效则为 true，若无效，为 false
@@ -98,6 +103,12 @@ export default {
   methods: {
     handleClose(done) {
       done()
+    },
+    selctionChanged(currentValue, oldValue){
+      // 计算当前同之前增加还是减少
+      var difference = currentValue - oldValue;
+      // 计算剩余票数
+      this.useout = this.useout - difference; 
     },
     confirmSubmit() {
       // 发送数据到服务器
@@ -138,17 +149,26 @@ export default {
         })
         this.verified = true
         // 填充数据
-        var tableData = this.$route.params.topicData
-        this.topic = tableData.topic
-        this.options = tableData.options
+        var topicData = this.$route.params.topicData
+        this.topic = topicData.topic
+        this.options = topicData.options
       } else {
         // 认证码可以使用
         this.effective = true
         this.verified = true
         // 填充数据
-        var tableData = this.$route.params.topicData
-        this.topic = tableData.topic
-        this.options = tableData.options
+        var topicData = this.$route.params.topicData
+        this.topic = topicData.topic
+        this.options = topicData.options
+        this.useout = topicData.topic.tnum
+        // 填充当前投票人id
+        this.voterecords.tlid = topicData.participant.tlid;
+        // 初始化票数数组
+        this.voterecords.selections = new Array(topicData.options.length);
+        for(var i = 0; i < topicData.options.length; i++){
+          // 初始默认票数都是0
+          this.voterecords.selections[i] = 0;
+        }
       }
     },
   },
