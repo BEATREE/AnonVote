@@ -19,22 +19,27 @@
       infinite-scroll-distance="10" -->
       <el-table-column label="id" prop="tid" width="80" sortable>
       </el-table-column>
-      <el-table-column label="投票主题名称" prop="name" width="180" sortable>
-        <el-tooltip
+      <el-table-column label="投票主题名称" prop="tname" width="180" sortable>
+        
+        <template slot-scope="scope">
+          <el-tooltip
               class="item"
               effect="dark"
               content="点击名称可查看当前投票结果"
               placement="top"
             >
-        <template slot-scope="scope">
-          <div slot="reference" class="name-wrapper"  @click="showResult(scope.row.tid)">
-            {{ scope.row.tname }}
-          </div>
+              <el-tag
+                size="medium"
+                type="success"
+                @click="showResult(scope.row.tid)"
+              >
+                {{ scope.row.tname }}
+              </el-tag>
+          </el-tooltip>
         </template>
-        </el-tooltip>
       </el-table-column>
 
-      <el-table-column label="发起人" prop="tname" width="130" sortable>
+      <el-table-column label="发起人" prop="fromUserName" width="130" sortable>
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
             <el-tag size="medium">{{ scope.row.fromUserName }}</el-tag>

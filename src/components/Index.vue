@@ -29,10 +29,10 @@
           v-for="item in platforms"
           :key="item.index"
           style="text-align: center; max-height: 185px;"
+          @click.native="redirectTo(item.href)"
         >
-          <i :class="'iconfont ' + item.icon" style="margin-top: 12.5px;"></i>
+          <i :class="'iconfont ' + item.icon" style="margin-top: 12.5px;" ></i>
           <h3>{{ item.name }}</h3>
-          <span style="line-height:2;">{{ item.desc }}</span>
         </el-card>
         <!-- </li>
     </ul> -->
@@ -55,17 +55,17 @@ export default {
         {
           icon: 'icon-windows',
           name: 'Windows',
-          desc: '',
+          href: 'https://anonvote.beatree.cn/AnonVote-win.zip',
         },
         {
           icon: 'icon-linux',
           name: 'Linux',
-          desc: '',
+          href: 'https://anonvote.beatree.cn/AnonVote-linux.zip',
         },
         {
           icon: 'icon-wangzhanguanli',
           name: 'Website',
-          desc: '',
+          href: 'https://anonvote.beatree.cn',
         },
       ],
       characteristics: [
@@ -114,6 +114,10 @@ export default {
     //     this.loading = false
     //   }, 2000)
     // },
+    // 跳转到其他网站
+    redirectTo(href){
+      window.open(href);
+    }
   },
   mounted() {
     // window.onscroll = () => {
