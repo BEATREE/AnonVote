@@ -61,7 +61,7 @@
               <el-upload
                 class="avatar-uploader"
                 name="userheadpic"
-                action="http://localhost:8088/api/upload/img"
+                action="https://api.beatree.cn/anonvote/api/upload/img"
                 :with-credentials="true"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"

@@ -19,28 +19,27 @@
       </div>
     </div>
     <div style="clear: both; display: flex; flex-direction: column;">
-      <h1 style="text-align: center;">投票案例</h1>
-      <h2 style="text-align: center;">Examples</h2>
+      <h1 style="text-align: center;">多平台适配</h1>
+      <h2 style="text-align: center;">Use in different platforms</h2>
       <div class="cardContainer">
         <!-- <ul class="infinite-list" v-infinite-scroll="moreTopics" infinite-scroll-disabled="disabled" style="padding-bottom: 16px;overflow:auto" >
       <li v-for="topic in topics" :key="topic.index"> -->
-        <el-card class="box-card" v-for="topic in topics" :key="topic.index">
-          <div slot="header" class="clearfix">
-            <span>{{ topic.tname }}</span>
-            <el-button style="float: right; padding: 3px 0" type="text">
-              <router-link to="about" target="_blank">前往查看</router-link>
-            </el-button>
-          </div>
-          <p>
-            {{ topic.tdesc }}
-          </p>
+        <el-card
+          class="box-card"
+          v-for="item in platforms"
+          :key="item.index"
+          style="text-align: center; max-height: 185px;"
+        >
+          <i :class="'iconfont ' + item.icon" style="margin-top: 12.5px;"></i>
+          <h3>{{ item.name }}</h3>
+          <span style="line-height:2;">{{ item.desc }}</span>
         </el-card>
         <!-- </li>
     </ul> -->
-        <div style="clear: both; text-align:center;margin: 16px 0 12px 0;">
+        <!-- <div style="clear: both; text-align:center;margin: 16px 0 12px 0;">
           <span v-if="loading">加载中...</span>
           <span v-if="noMore">没有更多了</span>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -52,48 +51,21 @@ export default {
   name: 'Topic',
   data() {
     return {
-      topics: [
+      platforms: [
         {
-          tid: 0,
-          tname: '最美程序猿',
-          tdesc:
-            '很多愿望，我想要的，上苍都给了我，很快或者很慢地，我都一一地接到了。而我对青春的美的渴望，虽然好象一直没有得到，可是走着走着，回过头一看，好象又都已经过去了。有几次，当时并没能马上感觉到，可是，也很有几次，我心里猛然醒悟：原来，这就是青春！ ',
-          tdeadline: '2020-05-01',
+          icon: 'icon-windows',
+          name: 'Windows',
+          desc: '',
         },
         {
-          tid: 0,
-          tname: '最美程序猿',
-          tdesc:
-            '很多愿望，我想要的，上苍都给了我，很快或者很慢地，我都一一地接到了。而我对青春的美的渴望，虽然好象一直没有得到，可是走着走着，回过头一看，好象又都已经过去了。有几次，当时并没能马上感觉到，可是，也很有几次，我心里猛然醒悟：原来，这就是青春！ ',
-          tdeadline: '2020-05-01',
+          icon: 'icon-linux',
+          name: 'Linux',
+          desc: '',
         },
         {
-          tid: 0,
-          tname: '最美程序猿',
-          tdesc:
-            '很多愿望，我想要的，上苍都给了我，很快或者很慢地，我都一一地接到了。而我对青春的美的渴望，虽然好象一直没有得到，可是走着走着，回过头一看，好象又都已经过去了。有几次，当时并没能马上感觉到，可是，也很有几次，我心里猛然醒悟：原来，这就是青春！ ',
-          tdeadline: '2020-05-01',
-        },
-        {
-          tid: 0,
-          tname: '最美程序猿',
-          tdesc:
-            '很多愿望，我想要的，上苍都给了我，很快或者很慢地，我都一一地接到了。而我对青春的美的渴望，虽然好象一直没有得到，可是走着走着，回过头一看，好象又都已经过去了。有几次，当时并没能马上感觉到，可是，也很有几次，我心里猛然醒悟：原来，这就是青春！ ',
-          tdeadline: '2020-05-01',
-        },
-        {
-          tid: 0,
-          tname: '最美程序猿',
-          tdesc:
-            '很多愿望，我想要的，上苍都给了我，很快或者很慢地，我都一一地接到了。而我对青春的美的渴望，虽然好象一直没有得到，可是走着走着，回过头一看，好象又都已经过去了。有几次，当时并没能马上感觉到，可是，也很有几次，我心里猛然醒悟：原来，这就是青春！ ',
-          tdeadline: '2020-05-01',
-        },
-        {
-          tid: 0,
-          tname: '最美程序猿',
-          tdesc:
-            '很多愿望，我想要的，上苍都给了我，很快或者很慢地，我都一一地接到了。而我对青春的美的渴望，虽然好象一直没有得到，可是走着走着，回过头一看，好象又都已经过去了。有几次，当时并没能马上感觉到，可是，也很有几次，我心里猛然醒悟：原来，这就是青春！ ',
-          tdeadline: '2020-05-01',
+          icon: 'icon-wangzhanguanli',
+          name: 'Website',
+          desc: '',
         },
       ],
       characteristics: [
@@ -117,29 +89,31 @@ export default {
     }
   },
   computed: {
-    noMore() {
-      return this.topics.length >= 15
-    },
-    disabled() {
-      return this.loading || this.noMore
-    },
+    // 曾用于实现无限加载
+    // noMore() {
+    //   return this.topics.length >= 15
+    // },
+    // disabled() {
+    //   return this.loading || this.noMore
+    // },
   },
   methods: {
-    moreTopics() {
-      this.loading = true
-      let temp = {
-        tid: 0,
-        tname: '最美程序猿',
-        tdesc:
-          '选取附件打开啦的肌肤拉卡决定是否发发打发大沙发的说法打法大沙发的说法考虑',
-        tdeadline: '2020-05-01',
-      }
-      setTimeout(() => {
-        this.topics.push(temp)
-        this.topics.push(temp)
-        this.loading = false
-      }, 2000)
-    },
+    // 无限加载的方法
+    // moreTopics() {
+    //   this.loading = true
+    //   let temp = {
+    //     tid: 0,
+    //     tname: '最美程序猿',
+    //     tdesc:
+    //       '选取附件打开啦的肌肤拉卡决定是否发发打发大沙发的说法打法大沙发的说法考虑',
+    //     tdeadline: '2020-05-01',
+    //   }
+    //   setTimeout(() => {
+    //     this.topics.push(temp)
+    //     this.topics.push(temp)
+    //     this.loading = false
+    //   }, 2000)
+    // },
   },
   mounted() {
     // window.onscroll = () => {

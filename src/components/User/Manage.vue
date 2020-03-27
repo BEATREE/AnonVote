@@ -10,7 +10,7 @@
       "
       class="scrollTable"
       ref="scrollTable"
-      :default-sort = "{prop: 'tdeadline', order: 'descending'}"
+      :default-sort="{ prop: 'tdeadline', order: 'descending' }"
       v-loading="loading"
     >
       <!-- 
@@ -20,17 +20,30 @@
       <el-table-column label="投票主题名称" prop="tname" width="180" sortable>
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
-            <el-tag
-              size="medium"
-              v-if="
-                new Date(scope.row.tdeadline).getTime() > new Date().getTime()
-              "
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="点击名称可查看当前投票结果"
+              placement="top"
             >
-              {{ scope.row.tname }}
-            </el-tag>
-            <el-tag size="medium" type="danger" v-else>
-              {{ scope.row.tname }}·已结束
-            </el-tag>
+              <el-tag
+                size="medium"
+                v-if="
+                  new Date(scope.row.tdeadline).getTime() > new Date().getTime()
+                "
+                @click="showResult(scope.row.tid)"
+              >
+                {{ scope.row.tname }}
+              </el-tag>
+              <el-tag
+                size="medium"
+                type="danger"
+                @click="showResult(scope.row.tid)"
+                v-else
+              >
+                {{ scope.row.tname }}·已结束
+              </el-tag>
+            </el-tooltip>
           </div>
         </template>
       </el-table-column>
@@ -65,7 +78,11 @@
           />
         </template>
         <template slot-scope="scope">
-          <el-button size="mini" @click="handlePreview(scope.$index, scope.row)" type="success">
+          <el-button
+            size="mini"
+            @click="handlePreview(scope.$index, scope.row)"
+            type="success"
+          >
             查看
           </el-button>
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">
@@ -164,18 +181,21 @@ export default {
       // console.log(this.$refs['scrollTable'])
       this.$refs['scrollTable'].$el.style.height = pageHeight - 183 + 'px'
     },
+    // 处理当前页大小改变
     handleSizeChange(val) {
       // 更新pagesize
       this.pagesize = val
       this.getMyTopics()
       console.log(`handleSizeChange: 每页 ${val} 条`)
     },
+    // 处理当前页码改变
     handleCurrentChange(val) {
       // 更新当前页面
       this.currentPage = val
       this.getMyTopics()
       console.log(`handleCurrentChange: 当前页 ${val} `)
     },
+    // 预览投票内容
     handlePreview(index, row) {
       this.axios
         .get('topic/getTopic/' + row.tid, {
@@ -191,9 +211,7 @@ export default {
             this.$alert(res.data.tdetail, res.data.tname, {
               confirmButtonText: '确定',
               dangerouslyUseHTMLString: true,
-              callback: action => {
-                
-              },
+              callback: action => {},
             })
           } else {
             this.$message({
@@ -203,6 +221,7 @@ export default {
           }
         })
     },
+    // 编辑当前投票
     handleEdit(index, row) {
       this.axios
         .get('topic/getTopic/' + row.tid, {
@@ -229,6 +248,7 @@ export default {
           }
         })
     },
+    // 删除当前投票
     handleDelete(index, row) {
       console.log(index, ':', row)
       // index 为列表序号，row 为对象，可通过 row.tid 来获取投票id
@@ -253,6 +273,15 @@ export default {
             type: infoType,
           })
         })
+    },
+    // 查看投票结果
+    showResult(tid) {
+      this.$router.push({
+        name: 'Result',
+        params: {
+          tid: tid,
+        },
+      })
     },
   },
   created() {

@@ -95,12 +95,14 @@
               <el-upload
                 class="avatar-uploader"
                 name="userheadpic"
-                action="http://localhost:8088/api/upload/img"
+                action="https://api.beatree.cn/anonvote/api/upload/img"
                 :with-credentials="true"
                 :show-file-list="false"
+                :objectBind="index"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
               >
+              <!-- 上文的objectBind属性为修改elementUIjs文件后的自定义属性 -->
                 <img v-if="option.opic" :src="option.opic" class="avatar" />
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
@@ -374,12 +376,12 @@ export default {
       }
     },
     // 图象上传
-    handleAvatarSuccess(res, file, fileList) {
+    handleAvatarSuccess(res, file, fileList, index) {
       console.log(res)
       console.log(file);
       console.log(fileList.length);
-      this.imageUrl[fileList.length - 1] = URL.createObjectURL(file.raw)
-      this.addTopicForm.options[fileList.length - 1].opic = res.storepath
+      this.imageUrl[index] = URL.createObjectURL(file.raw)
+      this.addTopicForm.options[index].opic = res.storepath
       // console.log(res)
     },
     beforeAvatarUpload(file) {

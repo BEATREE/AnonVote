@@ -55,12 +55,34 @@
         >
           我要选TA
         </el-checkbox> -->
-        <el-input-number v-model="voterecords.selections[index]" @change="selctionChanged" :min="0" :max="useout + 1" label="选TA" :disabled="!effective"></el-input-number>
+        <br />
+        <br />
+        <el-input-number
+          v-model="voterecords.selections[index]"
+          @change="selctionChanged"
+          class="selectionNum"
+          aria-readonly="true"
+          :min="0"
+          :max="topic.tnum"
+          :precision="0"
+          label="选TA"
+          :disabled="!effective || useout <= 0"
+        ></el-input-number>
       </el-card>
     </div>
     <div class="submit">
-      <el-button type="primary" @click="confirmDialogVisible = true" :disabled="!effective">
+      <el-button v-if="effective" type="primary" plain @click="reChoose">
+        重置选票
+      </el-button>
+      <el-button
+        type="primary"
+        @click="confirmDialogVisible = true"
+        v-if="effective"
+      >
         点击提交
+      </el-button>
+      <el-button type="primary" @click="showResult" v-if="!effective">
+        查看结果
       </el-button>
       <el-dialog
         title="提示"
@@ -74,7 +96,11 @@
         <p>是否确定提交您的选票？</p>
         <span slot="footer" class="dialog-footer">
           <el-button @click="confirmDialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="confirmSubmit"  :disabled="!effective">
+          <el-button
+            type="primary"
+            @click="confirmSubmit"
+            :disabled="!effective"
+          >
             确 定
           </el-button>
         </span>
@@ -90,11 +116,11 @@ export default {
     return {
       topic: {},
       options: [],
-      voterecords:{   
-        tlid: "",
+      voterecords: {
+        tlid: '',
         selections: [],
       },
-      useout: 0,  // 用于判断是否还有票数
+      useout: 0, // 用于判断是否还有票数
       confirmDialogVisible: false,
       verified: false, // 判断是否由认证码
       effective: false, // 判断认证码是否有效， 若有效则为 true，若无效，为 false
@@ -104,29 +130,77 @@ export default {
     handleClose(done) {
       done()
     },
-    selctionChanged(currentValue, oldValue){
+    // 数字输入框内容变化时
+    selctionChanged(currentValue, oldValue) {
       // 计算当前同之前增加还是减少
-      var difference = currentValue - oldValue;
-      // 计算剩余票数
-      this.useout = this.useout - difference; 
+      var difference = currentValue - oldValue
+      // 计算剩余票数 currentUseOut = useout + oldValue - currentValue
+      if (this.useout - difference < 0) {
+        // 非法票数
+        this.$message({
+          type: 'warning',
+          message: '请勿非法投票，请在跳转后输入认证码重新进入',
+        })
+        // 关闭投票页
+        this.closePage()
+        this.$router.push("jump")
+      } else {
+        this.useout = this.useout - difference
+      }
+    },
+    // 清楚当前选择数据，重新选择
+    reChoose() {
+      // 重置可选数量
+      this.useout = this.topic.tnum
+      // 重置已获投票
+      this.voterecords.selections = new Array(this.options.length)
+      document.getElementsByClassName('selectionNum')
+      for (var i = 0; i < this.options.length; i++) {
+        // 初始默认票数都是0
+        this.voterecords.selections[i] = 0
+      }
     },
     confirmSubmit() {
-      // 发送数据到服务器
-      
-      // 提示客户端成功信息
-      this.$message({
-        message: '您已提交选票',
-        type: 'success',
-      })
-      // 设置为不可投票状态
-      // 隐藏弹框
-      this.confirmDialogVisible = false;
-      this.effective = false;
-      // 显示票数
-
-      // 修改store信息
-      this.$store.commit("setVerifiedStatus", false)
-      this.$store.commit("setEffectiveStatus", false)
+      if (this.useout == this.topic.tnum) {
+        this.$message({
+          type: 'warning',
+          message: '您当前还未投票',
+        })
+        // 关闭窗口
+        this.confirmDialogVisible = false;
+      } else {
+        // 发送数据到服务器
+        this.axios
+          .post('vote/tovote', this.voterecords)
+          .then(response => {
+            var res = response.data
+            if (res.status == 1) {
+              // 提示客户端成功信息
+              this.$message({
+                message: '恭喜您，投票成功！',
+                type: 'success',
+              })
+            } else {
+              this.$message({
+                message: res.message,
+                type: 'warning',
+              })
+            }
+          })
+          .catch(error => {
+            this.$message({
+              message: error,
+              type: 'error',
+            })
+          })
+        // 隐藏弹框
+        this.confirmDialogVisible = false
+        this.effective = false
+        // 显示票数
+        // 修改store信息
+        this.$store.commit('setVerifiedStatus', false)
+        this.$store.commit('setEffectiveStatus', false)
+      }
     },
     checkEffective() {
       // 进行身份合法性核查
@@ -162,19 +236,45 @@ export default {
         this.options = topicData.options
         this.useout = topicData.topic.tnum
         // 填充当前投票人id
-        this.voterecords.tlid = topicData.participant.tlid;
+        this.voterecords.tlid = topicData.participant.tlid
         // 初始化票数数组
-        this.voterecords.selections = new Array(topicData.options.length);
-        for(var i = 0; i < topicData.options.length; i++){
+        this.voterecords.selections = new Array(topicData.options.length)
+        for (var i = 0; i < topicData.options.length; i++) {
           // 初始默认票数都是0
-          this.voterecords.selections[i] = 0;
+          this.voterecords.selections[i] = 0
         }
+
+        this.$message({
+          type: 'info',
+          message:
+            '您的总票数为' + this.topic.tnum + '票，请勿输入非法投票数据。',
+        })
       }
+    },
+    // 重置认证数据并跳转
+    closePage() {
+      this.effective = false
+      this.verified = false
+      this.$store.commit('setVerifiedStatus', false)
+      this.$store.commit('setEffectiveStatus', false)
+    },
+    // 查看投票结果
+    showResult() {
+      var that = this
+      this.$router.push({
+        name: 'Result',
+        params: {
+          tid: that.topic.tid,
+        },
+      })
     },
   },
   created() {
     console.log('Before check')
     this.checkEffective()
+  },
+  beforeDestroy() {
+    this.closePage()
   },
 }
 </script>
@@ -209,7 +309,7 @@ div.topicdesc {
   font-size: 16px;
   line-height: 22px;
 }
-.topicDetail{
+.topicDetail {
   p {
     text-indent: 2em !important;
   }

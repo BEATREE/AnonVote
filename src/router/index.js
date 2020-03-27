@@ -21,6 +21,7 @@ const routes = [
       { name: 'About', path: 'about', component: About },
       { name: 'Jump', path: 'jump', component: Jump },
       { name: 'Vote', path: 'vote', meta: { requireAuth: true }, component: Vote, },
+      { name: 'Result', path: 'result', component: () => import("../components/Result.vue"), },
 
     ]
   },

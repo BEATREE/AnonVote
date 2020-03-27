@@ -76,7 +76,7 @@
             </el-menu-item>
 
             <el-menu-item index="topics" @click="drawer = false">
-              <i class="el-icon-message-solid"></i>
+              <i class="el-icon-circle-plus"></i>
               <span slot="title">投票管理</span>
             </el-menu-item>
             <el-menu-item index="messages" @click="drawer = false">

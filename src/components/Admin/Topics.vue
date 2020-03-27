@@ -20,11 +20,18 @@
       <el-table-column label="id" prop="tid" width="80" sortable>
       </el-table-column>
       <el-table-column label="投票主题名称" prop="name" width="180" sortable>
+        <el-tooltip
+              class="item"
+              effect="dark"
+              content="点击名称可查看当前投票结果"
+              placement="top"
+            >
         <template slot-scope="scope">
-          <div slot="reference" class="name-wrapper">
+          <div slot="reference" class="name-wrapper"  @click="showResult(scope.row.tid)">
             {{ scope.row.tname }}
           </div>
         </template>
+        </el-tooltip>
       </el-table-column>
 
       <el-table-column label="发起人" prop="tname" width="130" sortable>
@@ -160,18 +167,21 @@ export default {
       // console.log(this.$refs['scrollTable'])
       this.$refs['scrollTable'].$el.style.height = pageHeight - 183 + 'px'
     },
+    // 处理页大小改变
     handleSizeChange(val) {
       // 更新pagesize
       this.pagesize = val
       this.getAllTopics()
       console.log(`handleSizeChange: 每页 ${val} 条`)
     },
+    // 处理当前页码改变
     handleCurrentChange(val) {
       // 更新当前页面
       this.currentPage = val
       this.getAllTopics()
       console.log(`handleCurrentChange: 当前页 ${val} `)
     },
+    // 预览投票内容
     handlePreview(index, row) {
       this.axios
         .get('topic/getTopic/' + row.tid, {
@@ -199,6 +209,7 @@ export default {
           }
         })
     },
+    // 删除该条投票
     handleDelete(index, row) {
       console.log(index, ':', row)
       // index 为列表序号，row 为对象，可通过 row.tid 来获取投票id
@@ -224,6 +235,7 @@ export default {
           })
         })
     },
+    // 向发起人发送通知
     handleSendMessage(index, row){
       // 携带uid参数跳转到发布通知页面
       this.$router.push({
@@ -232,7 +244,16 @@ export default {
           uid: row.uid,
         }
       })
-    }
+    },
+    // 查看投票结果
+    showResult(tid) {
+      this.$router.push({
+        name: 'Result',
+        params: {
+          tid: tid,
+        },
+      })
+    },
   },
   created() {
     this.getAllTopics()
