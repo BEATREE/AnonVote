@@ -28,6 +28,9 @@
       <el-menu-item index="about" class="hidden-xs-only">
         关于系统
       </el-menu-item>
+      <el-menu-item index="feedback" class="hidden-xs-only">
+        建议反馈
+      </el-menu-item>
 
       <el-menu-item class="nav-algolia-right" v-if="logged == ''">
         <!-- <el-autocomplete

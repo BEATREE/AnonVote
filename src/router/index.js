@@ -21,6 +21,7 @@ const routes = [
       { name: 'About', path: 'about', component: About },
       { name: 'Jump', path: 'jump', component: Jump },
       { name: 'Vote', path: 'vote', meta: { requireAuth: true }, component: Vote, },
+      { name: 'Feedback', path: 'feedback', meta: { requireAuth: true }, component: () => import("../components/Feedback.vue"), },
       { name: 'Result', path: 'result', component: () => import("../components/Result.vue"), },
 
     ]
@@ -55,6 +56,7 @@ const routes = [
       { name: 'Reedit', path: 'reedit', component: () => import('../components/User/Reedit.vue') },
     ]
   },
+  // 管理员后台路由
   {
     path: '/admin',
     name: 'Admin',
@@ -62,6 +64,7 @@ const routes = [
     component: () => import('../views/Admin.vue'),
     children: [
       {name: 'AdminIndex', path: 'index', component: ()=>import("../components/Admin/Index.vue")},
+      { name: 'MyMessage', path: 'mymessage', component: () => import("../components/Admin/Message.vue") },
       { name: 'AddMessage', path: 'addmessage', component: () => import("../components/Admin/AddMessage.vue")},
       { name: 'Users', path: 'users', component: () => import("../components/Admin/Users.vue") },
       { name: 'Topics', path: 'topics', component: () => import("../components/Admin/Topics.vue") }, 

@@ -12,8 +12,8 @@ import moment from 'moment';
 // Vue.config.devtools = false // 不允许检查代码
 Vue.config.productionTip = false
 
-axios.defaults.baseURL = 'https://api.beatree.cn/anonvote/api/'     // 开发环境下的api
-// axios.defaults.baseURL = 'http://localhost:8088/api/'     // 开发环境下的api
+// axios.defaults.baseURL = 'https://api.beatree.cn/anonvote/api/'     // 开发环境下的api
+axios.defaults.baseURL = 'http://localhost:8088/api/'     // 开发环境下的api
 axios.defaults.crossDomain = true;
 axios.defaults.withCredentials = true;
 //此处是增加的代码，设置请求头的类型

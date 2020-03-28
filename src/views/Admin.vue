@@ -19,8 +19,12 @@
             <i class="el-icon-s-home"></i>
             <span slot="title">管理员首页</span>
           </el-menu-item>
+          <el-menu-item index="/admin/mymessage">
+              <i class="el-icon-message"></i>
+              <span slot="title">我的通知</span>
+            </el-menu-item>
           <el-menu-item index="/admin/addmessage">
-            <i class="el-icon-s-home"></i>
+            <i class="el-icon-circle-plus"></i>
             <span slot="title">发布通知</span>
           </el-menu-item>
           <el-menu-item index="/admin/users">
@@ -29,7 +33,7 @@
           </el-menu-item>
 
           <el-menu-item index="/admin/topics">
-            <i class="el-icon-circle-plus"></i>
+            <i class="el-icon-s-ticket"></i>
             <span slot="title">投票管理</span>
           </el-menu-item>
 
@@ -66,6 +70,10 @@
               <i class="el-icon-s-home"></i>
               <span slot="title">后台首页</span>
             </el-menu-item>
+            <el-menu-item index="mymessage" @click="drawer = false">
+              <i class="el-icon-message"></i>
+              <span slot="title">我的通知</span>
+            </el-menu-item>
             <el-menu-item index="addmessage" @click="drawer = false">
               <i class="el-icon-circle-plus"></i>
               <span slot="title">发布通知</span>
@@ -76,7 +84,7 @@
             </el-menu-item>
 
             <el-menu-item index="topics" @click="drawer = false">
-              <i class="el-icon-circle-plus"></i>
+              <i class="el-icon-s-ticket"></i>
               <span slot="title">投票管理</span>
             </el-menu-item>
             <el-menu-item index="messages" @click="drawer = false">
