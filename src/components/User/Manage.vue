@@ -10,7 +10,7 @@
       "
       class="scrollTable"
       ref="scrollTable"
-      :default-sort="{ prop: 'tdeadline', order: 'descending' }"
+      :default-sort="{ prop: 'tid', order: 'descending' }"
       v-loading="loading"
     >
       <!-- 
@@ -177,7 +177,7 @@ export default {
     // 设置滚动表格容器的高度用来保证滚动效果
     setTableHight() {
       var pageHeight = document.body.clientHeight
-      console.log(pageHeight)
+      //console.log(pageHeight)
       // console.log(this.$refs['scrollTable'])
       this.$refs['scrollTable'].$el.style.height = pageHeight - 183 + 'px'
     },
@@ -186,14 +186,14 @@ export default {
       // 更新pagesize
       this.pagesize = val
       this.getMyTopics()
-      console.log(`handleSizeChange: 每页 ${val} 条`)
+      //console.log(`handleSizeChange: 每页 ${val} 条`)
     },
     // 处理当前页码改变
     handleCurrentChange(val) {
       // 更新当前页面
       this.currentPage = val
       this.getMyTopics()
-      console.log(`handleCurrentChange: 当前页 ${val} `)
+      //console.log(`handleCurrentChange: 当前页 ${val} `)
     },
     // 预览投票内容
     handlePreview(index, row) {
@@ -250,7 +250,7 @@ export default {
     },
     // 删除当前投票
     handleDelete(index, row) {
-      console.log(index, ':', row)
+      //console.log(index, ':', row)
       // index 为列表序号，row 为对象，可通过 row.tid 来获取投票id
       this.axios
         .delete('topic/delete/' + row.tid, {

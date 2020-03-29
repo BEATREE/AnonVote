@@ -65,7 +65,7 @@ export default {
         })
         .then(response => {
           var res = response.data
-          console.log(res)
+          //console.log(res)
           if ((res.status = 1)) {
             this.initInfo = res.data
           } else {

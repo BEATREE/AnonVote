@@ -140,13 +140,13 @@ export default {
       // 更新pagesize
       this.pagesize = val
       this.getMessages()
-      console.log(`handleSizeChange: 每页 ${val} 条`)
+      //console.log(`handleSizeChange: 每页 ${val} 条`)
     },
     handleCurrentChange(val) {
       // 更新当前页面
       this.currentPage = val
       this.getMessages()
-      console.log(`handleCurrentChange: 当前页 ${val} `)
+      //console.log(`handleCurrentChange: 当前页 ${val} `)
     },
   },
   components: {

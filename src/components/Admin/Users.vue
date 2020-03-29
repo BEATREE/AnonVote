@@ -5,7 +5,7 @@
       :data="
         tableData.filter(
           data =>
-            !search || data.tname.toLowerCase().includes(search.toLowerCase()),
+            !search || data.uname.toLowerCase().includes(search.toLowerCase()),
         )
       "
       class="scrollTable"
@@ -143,7 +143,7 @@ export default {
     // 设置滚动表格容器的高度用来保证滚动效果
     setTableHight() {
       var pageHeight = document.body.clientHeight
-      console.log(pageHeight)
+      //console.log(pageHeight)
       // console.log(this.$refs['scrollTable'])
       this.$refs['scrollTable'].$el.style.height = pageHeight - 183 + 'px'
     },
@@ -151,13 +151,13 @@ export default {
       // 更新pagesize
       this.pagesize = val
       this.getAllUsers()
-      console.log(`handleSizeChange: 每页 ${val} 条`)
+      //console.log(`handleSizeChange: 每页 ${val} 条`)
     },
     handleCurrentChange(val) {
       // 更新当前页面
       this.currentPage = val
       this.getAllUsers()
-      console.log(`handleCurrentChange: 当前页 ${val} `)
+      //console.log(`handleCurrentChange: 当前页 ${val} `)
     },
     handleEdit(index, row) {
       this.axios.get("topic/getTopic/" + row.tid, {
