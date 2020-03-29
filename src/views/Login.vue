@@ -275,18 +275,7 @@ export default {
               if (res.status == 1) {
                 //显示登录结果
                 // console.log('注册成功')
-                localStorage.setItem('currentUser', true)
-                this.$message({
-                  message: '恭喜您，注册成功，已自动登录',
-                  type: 'success',
-                })
-                this.$store.commit('setUserInfo', {
-                  uid: res.data.uid,
-                  uname: res.data.uname,
-                  uhead: res.data.uhead,
-                  uemail: res.data.uemail,
-                })
-                this.$router.push('/admin')
+                this.activeName="first"
               } else if (res.status == 2) {
                 // console.log('注册失败')
                 // console.log(response)

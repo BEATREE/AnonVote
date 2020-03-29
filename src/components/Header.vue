@@ -109,6 +109,9 @@
         <el-menu-item index="about" @click="drawer = false">
           关于系统
         </el-menu-item>
+        <el-menu-item index="feedback" @click="drawer = false">
+          建议反馈
+        </el-menu-item>
       </el-menu>
     </el-drawer>
   </el-header>
