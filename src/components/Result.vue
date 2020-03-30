@@ -51,8 +51,8 @@ export default {
     },
     initInfo() {
       this.topicId = this.$route.params.tid
-      //console.log(this.topicId)
-      //console.log(this.topicId == undefined)
+      console.log(this.topicId)
+      console.log(this.topicId == undefined)
       // typeof() 查看某种变量的类型，number、string、boolean、object、function、undefined
       if (this.topicId == undefined) {
         this.$message({

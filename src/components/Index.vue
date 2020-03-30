@@ -77,12 +77,12 @@ export default {
         {
           icon: 'icon-anquan',
           name: '数据加密',
-          desc: '存储与运算步骤采用同态加密，保护数据安全',
+          desc: '存储于运算步骤采用同态加密，保护数据安全',
         },
         {
           icon: 'icon-tuandui',
           name: '主题保密',
-          desc: '通过发放唯一认证码，保护投票主题',
+          desc: '通过发放认证码，保护投票主题',
         },
       ],
       loading: false,

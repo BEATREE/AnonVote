@@ -377,9 +377,9 @@ export default {
     },
     // 图象上传
     handleAvatarSuccess(res, file, fileList, index) {
-      //console.log(res)
-      //console.log(file);
-      //console.log(fileList.length);
+      console.log(res)
+      console.log(file);
+      console.log(fileList.length);
       this.imageUrl[index] = URL.createObjectURL(file.raw)
       this.addTopicForm.options[index].opic = res.storepath
       // console.log(res)

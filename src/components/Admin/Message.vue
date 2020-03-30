@@ -86,7 +86,7 @@ export default {
     },
     // 查看通知详情
     readMessage(index) {
-      // //console.log(index)
+      // console.log(index)
       var currentMessage = this.messages[index]
       //   修改弹窗绑定内容
       this.dialogmsg = currentMessage
@@ -140,13 +140,13 @@ export default {
       // 更新pagesize
       this.pagesize = val
       this.getMessages()
-      //console.log(`handleSizeChange: 每页 ${val} 条`)
+      console.log(`handleSizeChange: 每页 ${val} 条`)
     },
     handleCurrentChange(val) {
       // 更新当前页面
       this.currentPage = val
       this.getMessages()
-      //console.log(`handleCurrentChange: 当前页 ${val} `)
+      console.log(`handleCurrentChange: 当前页 ${val} `)
     },
   },
   components: {

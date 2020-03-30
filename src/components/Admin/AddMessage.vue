@@ -175,7 +175,7 @@ export default {
   // vue-router 钩子函数,用来判断路由
   beforeRouteEnter(to, from, next) {
     // from源路径对象；to目标路径对象，进行带参跳转时候，参数存储在 to 中
-    //console.log(from);
+    console.log(from);
     if("/admin/topics" == from.fullPath){
       next(vm => {
         // 将参数填充到数组中，设置默认值

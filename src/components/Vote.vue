@@ -207,7 +207,7 @@ export default {
       var verified = this.$store.getters.getVerified
       var effective = this.$store.getters.getEffective
 
-      //console.log(verified)
+      console.log(verified)
       if (!verified) {
         this.$notify.error({
           title: '系统提示',
@@ -270,7 +270,7 @@ export default {
     },
   },
   created() {
-    //console.log('Before check')
+    console.log('Before check')
     this.checkEffective()
   },
   beforeDestroy() {

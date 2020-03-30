@@ -5,7 +5,7 @@
       :data="
         tableData.filter(
           data =>
-            !search || data.title.toLowerCase().includes(search.toLowerCase()),
+            !search || data.tname.toLowerCase().includes(search.toLowerCase()),
         )
       "
       class="scrollTable"
@@ -150,21 +150,21 @@ export default {
     // 设置滚动表格容器的高度用来保证滚动效果
     setTableHight() {
       var pageHeight = document.body.clientHeight
-      //console.log(pageHeight)
-      // //console.log(this.$refs['scrollTable'])
+      console.log(pageHeight)
+      // console.log(this.$refs['scrollTable'])
       this.$refs['scrollTable'].$el.style.height = pageHeight - 183 + 'px'
     },
     handleSizeChange(val) {
       // 更新pagesize
       this.pagesize = val
       this.getAllNotices()
-      //console.log(`handleSizeChange: 每页 ${val} 条`)
+      console.log(`handleSizeChange: 每页 ${val} 条`)
     },
     handleCurrentChange(val) {
       // 更新当前页面
       this.currentPage = val
       this.getAllNotices()
-      //console.log(`handleCurrentChange: 当前页 ${val} `)
+      console.log(`handleCurrentChange: 当前页 ${val} `)
     },
     handlePreview(index, row) {
       this.$alert(row.content, row.title, {
@@ -176,7 +176,7 @@ export default {
       })
     },
     handleDelete(index, row) {
-      //console.log(index, ':', row)
+      console.log(index, ':', row)
       // index 为列表序号，row 为对象，可通过 row.tid 来获取投票id
       this.axios
         .delete('notice/delNotice/' + row.nid, {

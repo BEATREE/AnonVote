@@ -217,7 +217,7 @@ export default {
             let res = response.data //用res承接返回后台的json文件(像使用数组那样)
             if (res.status == 1) {
               //显示登录结果
-              //console.log('登录成功')
+              console.log('登录成功')
               this.$message({
                 message: 'Bingo, 登录成功！',
                 type: 'success',
@@ -247,8 +247,8 @@ export default {
                 this.$router.push('/user')
               }
             } else {
-              //console.log('登录失败')
-              //console.log(response)
+              console.log('登录失败')
+              console.log(response)
               var returnMsg = res.message
               // 弹出登录失败的提示
               this.$message.error(returnMsg)
@@ -271,7 +271,7 @@ export default {
             .then(response => {
               let res = response.data //用res承接返回后台的json文件(像使用数组那样)
               let message = res.message
-              //console.log(res)
+              console.log(res)
               if (res.status == 1) {
                 //显示登录结果
                 // console.log('注册成功')
@@ -298,7 +298,7 @@ export default {
       })
     },
     handleClick(tab, event) {
-      //console.log(tab, event)
+      console.log(tab, event)
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
