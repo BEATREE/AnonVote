@@ -5,7 +5,9 @@
       :data="
         tableData.filter(
           data =>
-            !search || data.tname.toLowerCase().includes(search.toLowerCase()),
+            !search 
+            || data.uname.toLowerCase().includes(search.toLowerCase())
+            || data.uemail.toLowerCase().includes(search.toLowerCase()),
         )
       "
       class="scrollTable"

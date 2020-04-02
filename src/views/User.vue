@@ -171,6 +171,7 @@
           </ul>
         </el-header>
         <el-main>
+          <BreadCrumb></BreadCrumb>
           <transition name="el-zoom-in-center">
             <router-view></router-view>
           </transition>
@@ -184,6 +185,7 @@
 </template>
 
 <script>
+import BreadCrumb from "../components/utils/Breadcrumb"
 export default {
   name: 'User',
   data() {
@@ -199,6 +201,9 @@ export default {
       switchIcon: 'el-icon-s-fold', // 控制图标的样式
       userInfo: {},
     }
+  },
+  components: {
+    BreadCrumb
   },
   methods: {
     handleOpen(key, keyPath) {

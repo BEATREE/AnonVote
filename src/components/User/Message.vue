@@ -172,6 +172,7 @@ export default {
   }
 }
 .container{
+  clear:both;
   display: flex;
   flex-direction: column;
 }

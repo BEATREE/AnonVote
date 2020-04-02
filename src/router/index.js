@@ -47,13 +47,14 @@ const routes = [
     name: 'User',
     redirect: '/user/index',
     component: () => import("../views/User.vue"),
+    meta: { title: "用户首页" },
     children: [
-      { name: 'UserIndex', path: 'index', component: () => import('../components/User/Index.vue') },
-      { name: 'Add', path: 'add', component: () => import('../components/User/Add.vue') },
-      { name: 'Manage', path: 'manage', component: () => import('../components/User/Manage.vue') },
-      { name: 'Message', path: 'message', component: () => import('../components/User/Message.vue') },
-      { name: 'Profile', path: 'profile', component: () => import('../components/User/Profile.vue') },
-      { name: 'Reedit', path: 'reedit', component: () => import('../components/User/Reedit.vue') },
+      { name: 'UserIndex', path: 'index', component: () => import('../components/User/Index.vue'), meta: { title: "信息概览" }},
+      { name: 'Add', path: 'add', component: () => import('../components/User/Add.vue'), meta: { title: "创建投票" } },
+      { name: 'Manage', path: 'manage', component: () => import('../components/User/Manage.vue'), meta: { title: "管理投票" }},
+      { name: 'Message', path: 'message', component: () => import('../components/User/Message.vue'), meta: { title: "消息通知" }},
+      { name: 'Profile', path: 'profile', component: () => import('../components/User/Profile.vue'), meta: { title: "个人资料" } },
+      { name: 'Reedit', path: 'reedit', component: () => import('../components/User/Reedit.vue'), meta: { title: "重新编辑" }},
     ]
   },
   // 管理员后台路由
@@ -61,15 +62,16 @@ const routes = [
     path: '/admin',
     name: 'Admin',
     redirect: '/admin/index',
-    component: () => import('../views/Admin.vue'),
+    component: () => import('../views/Admin.vue'), 
+    meta: { title: "管理员首页" },
     children: [
-      {name: 'AdminIndex', path: 'index', component: ()=>import("../components/Admin/Index.vue")},
-      { name: 'MyMessage', path: 'mymessage', component: () => import("../components/Admin/Message.vue") },
-      { name: 'AddMessage', path: 'addmessage', component: () => import("../components/Admin/AddMessage.vue")},
-      { name: 'Users', path: 'users', component: () => import("../components/Admin/Users.vue") },
-      { name: 'Topics', path: 'topics', component: () => import("../components/Admin/Topics.vue") }, 
-      { name: 'Messages', path: 'messages', component: () => import("../components/Admin/Messages.vue") }, 
-      { name: "Profile", path: 'profile', component: ()=>import("../components/Admin/Profile.vue")}
+      { name: 'AdminIndex', path: 'index', component: () => import("../components/Admin/Index.vue"), meta: { title: "信息概览" }},
+      { name: 'MyMessage', path: 'mymessage', component: () => import("../components/Admin/Message.vue"), meta: { title: "我的通知" }},
+      { name: 'AddMessage', path: 'addmessage', component: () => import("../components/Admin/AddMessage.vue"), meta: { title: "发布通知" }},
+      { name: 'Users', path: 'users', component: () => import("../components/Admin/Users.vue"), meta: { title: "用户管理" } },
+      { name: 'Topics', path: 'topics', component: () => import("../components/Admin/Topics.vue"), meta: { title: "投票管理" }}, 
+      { name: 'Messages', path: 'messages', component: () => import("../components/Admin/Messages.vue"), meta: { title: "通知管理" }}, 
+      { name: "Profile", path: 'profile', component: () => import("../components/Admin/Profile.vue"), meta: { title: "个人资料" }}
     ]
   },
   // 测试页面路由

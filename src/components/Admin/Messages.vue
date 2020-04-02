@@ -5,22 +5,33 @@
       :data="
         tableData.filter(
           data =>
-            !search || data.tname.toLowerCase().includes(search.toLowerCase()),
+            !search ||
+            data.title.toLowerCase().includes(search.toLowerCase()) ||
+            data.fromUserName.toLowerCase().includes(search.toLowerCase()) ||
+            data.toUserName.toLowerCase().includes(search.toLowerCase()),
         )
       "
       class="scrollTable"
       ref="scrollTable"
-      :default-sort = "{prop: 'tid', order: 'null'}"
+      :default-sort="{ prop: 'tid', order: 'null' }"
       v-loading="loading"
     >
       <!-- 
       v-infinite-scroll="load"
       infinite-scroll-disabled="busy"
       infinite-scroll-distance="10" -->
-      <el-table-column label="id" prop="nid" width="80" sortable>
-      </el-table-column>
-      <el-table-column label="通知标题" prop="title" width="180" sortable>
-      </el-table-column>
+      <el-table-column
+        label="id"
+        prop="nid"
+        width="80"
+        sortable
+      ></el-table-column>
+      <el-table-column
+        label="通知标题"
+        prop="title"
+        width="180"
+        sortable
+      ></el-table-column>
 
       <el-table-column label="发起方" prop="fromUserName" width="130" sortable>
         <template slot-scope="scope">
@@ -170,9 +181,7 @@ export default {
       this.$alert(row.content, row.title, {
         confirmButtonText: '确定',
         dangerouslyUseHTMLString: true,
-        callback: action => {
-          
-        },
+        callback: action => {},
       })
     },
     handleDelete(index, row) {
@@ -189,7 +198,7 @@ export default {
           var infoType = 'error'
           if (res.status == 1) {
             // 操作成功
-            this.getAllNotices();
+            this.getAllNotices()
             infoType = 'success'
           }
           this.$message({
