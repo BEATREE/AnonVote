@@ -20,8 +20,8 @@ const routes = [
       { name: 'Example', path: 'example', component: Example },
       { name: 'About', path: 'about', component: About },
       { name: 'Jump', path: 'jump', component: Jump },
-      { name: 'Vote', path: 'vote', meta: { requireAuth: true }, component: Vote, },
-      { name: 'Feedback', path: 'feedback', meta: { requireAuth: true }, component: () => import("../components/Feedback.vue"), },
+      { name: 'Vote', path: 'vote', component: Vote, },
+      { name: 'Feedback', path: 'feedback', component: () => import("../components/Feedback.vue"), },
       { name: 'Result', path: 'result', component: () => import("../components/Result.vue"), },
 
     ]

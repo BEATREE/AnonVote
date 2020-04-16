@@ -79,7 +79,20 @@ export default {
               }
             })
 
-          } else {
+          } else if(res.status == 3){
+            // 投票已截止
+            this.$message({
+              type: 'warning',
+              message: res.message
+            });
+            
+            this.$router.push({
+              name: 'Result',
+              params: {
+                tid: res.data.tid,
+              },
+            })
+          }else {
             this.$message({
               type: 'error',
               message: res.message,
