@@ -77,7 +77,7 @@ export default {
         {
           icon: 'icon-anquan',
           name: '数据加密',
-          desc: '存储于运算步骤采用同态加密，保护数据安全',
+          desc: '存储与运算步骤采用同态加密，保护数据安全',
         },
         {
           icon: 'icon-tuandui',

@@ -160,7 +160,7 @@ export default {
         this.voterecords.selections[i] = 0
       }
     },
-    confirmSubmit() {
+    confirmSubmit() {     
       if (this.useout == this.topic.tnum) {
         this.$message({
           type: 'warning',
@@ -169,37 +169,8 @@ export default {
         // 关闭窗口
         this.confirmDialogVisible = false;
       } else {
-        // 发送数据到服务器
-        this.axios
-          .post('vote/tovote', this.voterecords)
-          .then(response => {
-            var res = response.data
-            if (res.status == 1) {
-              // 提示客户端成功信息
-              this.$message({
-                message: '恭喜您，投票成功！',
-                type: 'success',
-              })
-            } else {
-              this.$message({
-                message: res.message,
-                type: 'warning',
-              })
-            }
-          })
-          .catch(error => {
-            this.$message({
-              message: error,
-              type: 'error',
-            })
-          })
-        // 隐藏弹框
-        this.confirmDialogVisible = false
-        this.effective = false
-        // 显示票数
-        // 修改store信息
-        this.$store.commit('setVerifiedStatus', false)
-        this.$store.commit('setEffectiveStatus', false)
+        // 加密数据，并提交
+        this.encodeSelections();
       }
     },
     checkEffective() {
@@ -268,6 +239,64 @@ export default {
         },
       })
     },
+    // 加密选项数据
+    encodeSelections(){
+      var that = this;
+      this.axios
+      .post("https://api.beatree.cn/paillier/encode/array", {numbers: this.voterecords.selections})
+      .then( response => {
+        var res = response.data;
+        if(res.status == 1){
+          for(var i = 0; i < this.voterecords.selections.length; i++){
+            this.voterecords.selections[i] = res.data[i];
+          }
+          console.log(res.data)
+          // 提交数据
+          this.submitVoterecords();
+        }else{
+          this.$message({
+            message: res.message,
+            type: 'success',
+          })
+          
+        }
+      })
+    },
+    // 提交密文投票数据
+    submitVoterecords(){
+        // 发送数据到服务器
+        this.axios
+          .post('vote/tovote', this.voterecords)
+          .then(response => {
+            var res = response.data
+            if (res.status == 1) {
+              // 提示客户端成功信息
+              this.$message({
+                message: '恭喜您，投票成功！',
+                type: 'success',
+              })
+            } else {
+              this.$message({
+                message: res.message,
+                type: 'warning',
+              })
+            }
+          })
+          .catch(error => {
+            this.$message({
+              message: error,
+              type: 'error',
+            })
+          })
+        // 隐藏弹框
+        this.confirmDialogVisible = false
+        this.effective = false
+        // 显示票数
+        // 修改store信息
+        this.$store.commit('setVerifiedStatus', false)
+        this.$store.commit('setEffectiveStatus', false)
+    }
+
   },
   created() {
     console.log('Before check')
