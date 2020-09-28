@@ -1,6 +1,10 @@
 # AnonVote
 
-基于Paillier的匿名投票系统
+基于Paillier的匿名投票系统。
+
+该仓库为项目前端仓库，后端项目为 `AnonVote-Server` 与 `Paillier-Server`
+
+[关于系统](https://anonvote.beatree.cn/#/about)
 
 ## Project setup
 ```
