@@ -13,7 +13,7 @@
     "core-js": "^3.6.4",
     "element-ui": "^2.13.0",
     "moment": "^2.24.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "sass-loader": "^8.0.2",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
